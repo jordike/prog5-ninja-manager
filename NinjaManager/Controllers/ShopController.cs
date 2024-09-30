@@ -2,7 +2,7 @@
 
 namespace NinjaManager.Controllers;
 
-public class NinjaController : Controller
+public class ShopController : Controller
 {
     public IActionResult Index()
     {

@@ -22,8 +22,24 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Dropbox/School/HBO Bachelor - Informatica/2024-2025/Periode 1/ATD INF - Programmeren 5 (C\#) - PROG5/NinjaManager/NinjaManager/Views/Home/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+[C:/Users/user/Dropbox/School/HBO Bachelor - Informatica/2024-2025/Periode 1/ATD INF - Programmeren 5 (C\#) - PROG5/NinjaManager/NinjaManager/Views/Ninja/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmluamFcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Dropbox/School/HBO Bachelor - Informatica/2024-2025/Periode 1/ATD INF - Programmeren 5 (C\#) - PROG5/NinjaManager/NinjaManager/Views/Ninja/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmluamFcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Dropbox/School/HBO Bachelor - Informatica/2024-2025/Periode 1/ATD INF - Programmeren 5 (C\#) - PROG5/NinjaManager/NinjaManager/Views/Ninja/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmluamFcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Dropbox/School/HBO Bachelor - Informatica/2024-2025/Periode 1/ATD INF - Programmeren 5 (C\#) - PROG5/NinjaManager/NinjaManager/Views/Ninja/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmluamFcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Dropbox/School/HBO Bachelor - Informatica/2024-2025/Periode 1/ATD INF - Programmeren 5 (C\#) - PROG5/NinjaManager/NinjaManager/Views/Ninja/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmluamFcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/user/Dropbox/School/HBO Bachelor - Informatica/2024-2025/Periode 1/ATD INF - Programmeren 5 (C\#) - PROG5/NinjaManager/NinjaManager/Views/Shared/Error.cshtml]
@@ -32,6 +48,26 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/user/Dropbox/School/HBO Bachelor - Informatica/2024-2025/Periode 1/ATD INF - Programmeren 5 (C\#) - PROG5/NinjaManager/NinjaManager/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Dropbox/School/HBO Bachelor - Informatica/2024-2025/Periode 1/ATD INF - Programmeren 5 (C\#) - PROG5/NinjaManager/NinjaManager/Views/Shop/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcFxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Dropbox/School/HBO Bachelor - Informatica/2024-2025/Periode 1/ATD INF - Programmeren 5 (C\#) - PROG5/NinjaManager/NinjaManager/Views/Shop/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcFxEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Dropbox/School/HBO Bachelor - Informatica/2024-2025/Periode 1/ATD INF - Programmeren 5 (C\#) - PROG5/NinjaManager/NinjaManager/Views/Shop/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcFxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Dropbox/School/HBO Bachelor - Informatica/2024-2025/Periode 1/ATD INF - Programmeren 5 (C\#) - PROG5/NinjaManager/NinjaManager/Views/Shop/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcFxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Dropbox/School/HBO Bachelor - Informatica/2024-2025/Periode 1/ATD INF - Programmeren 5 (C\#) - PROG5/NinjaManager/NinjaManager/Views/Shop/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/user/Dropbox/School/HBO Bachelor - Informatica/2024-2025/Periode 1/ATD INF - Programmeren 5 (C\#) - PROG5/NinjaManager/NinjaManager/Views/_ViewImports.cshtml]
