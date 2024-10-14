@@ -1,9 +1,17 @@
 ﻿@model List<Ninja>
 
 <div class="container">
-    <h1 class="mb-3">Ninja's</h1>
-    
-    <div class="row row-cols-4 gap-3">
+    <div class="d-flex justify-content-between">
+        <h1 class="mb-3">Ninja's</h1>
+        
+        <span>
+            <a class="btn btn-primary rounded-pill" asp-action="Create">
+                <i class="fa fa-solid fa-plus"></i>
+            </a>
+        </span>
+    </div>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 gap-3">
         @foreach (var ninja in Model)
         {
             <a class="col text-decoration-none text-black" asp-action="Edit" asp-route-id="@ninja.Id">
@@ -11,7 +19,7 @@
                     <div class="card-header">
                         <h2>@ninja.Name</h2>
                     </div>
-                    
+
                     <div class="card-body">
                         <ul>
                             <li>Gold: @ninja.Gold</li>
