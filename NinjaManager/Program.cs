@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using NinjaManager.Models;
+
 namespace NinjaManager;
 
 public class Program
@@ -8,6 +11,9 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
+
+        builder.Services.AddDbContext<NinjaManagerContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("NinjaManager")));
 
         var app = builder.Build();
 
