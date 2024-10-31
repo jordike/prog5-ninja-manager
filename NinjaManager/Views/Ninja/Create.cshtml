@@ -1,1 +1,21 @@
-﻿
+﻿@model Ninja
+
+<form method="post">
+    <div class="form-group mb-3">
+        <span class="text-danger mb-2" asp-validation-for="@Model.Name"></span>
+        <label class="mb-2" asp-for="@Model.Name"></label>
+        <input class="form-control" type="text" asp-for="@Model.Name"/>
+    </div>
+
+    <div class="form-group mb-3">
+        <span class="text-danger mb-2" asp-validation-for="@Model.Gold"></span>
+        <label class="mb-2" asp-for="@Model.Gold"></label>
+        <input class="form-control" type="number" asp-for="@Model.Gold"/>
+    </div>
+
+    <div class="form-group mb-3">
+        <button class="btn btn-primary" type="submit">Create</button>
+        
+        <a class="btn btn-secondary" type="button" asp-action="Index">Cancel</a>
+    </div>
+</form>
