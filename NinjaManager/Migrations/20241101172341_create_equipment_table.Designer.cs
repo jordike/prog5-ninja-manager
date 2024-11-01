@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NinjaManager.Models;
 
@@ -10,9 +11,11 @@ using NinjaManager.Models;
 namespace NinjaManager.Migrations
 {
     [DbContext(typeof(NinjaManagerContext))]
-    partial class NinjaManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20241101172341_create_equipment_table")]
+    partial class create_equipment_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +41,7 @@ namespace NinjaManager.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Equipment");
+                    b.ToTable("equipment");
                 });
 
             modelBuilder.Entity("NinjaManager.Models.Ninja", b =>
@@ -59,19 +62,6 @@ namespace NinjaManager.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Ninjas");
-                });
-
-            modelBuilder.Entity("NinjaManager.Models.NinjaHasEquipment", b =>
-                {
-                    b.Property<int>("NinjaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EquipmentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("NinjaId", "EquipmentId");
-
-                    b.ToTable("NinjaHasEquipment");
                 });
 #pragma warning restore 612, 618
         }
