@@ -16,31 +16,32 @@ public class ShopController : Controller
 
     public IActionResult Index()
     {
-        var availableEquipment = context.Equipment
-            .Where(e => !context.NinjaHasEquipment
-            .Any(nhe => nhe.EquipmentId == e.Id && nhe.NinjaId == 1))
-            .ToList();
+        var ninjaList = this.context.Ninjas.ToList();
 
-        return View(availableEquipment);
+        return View(ninjaList);
     }
 
-    public IActionResult Create()
-    {
-        return View();
-    }
+    //public IActionResult Create()
+    //{
+    //    return View();
+    //}
 
-    public IActionResult Edit(int id)
-    {
-        return View();
-    }
+    //public IActionResult Edit(int id)
+    //{
+    //    return View();
+    //}
 
-    public IActionResult Delete(int id)
-    {
-        return View();
-    }
+    //public IActionResult Delete(int id)
+    //{
+    //    return View();
+    //}
 
     public IActionResult Details(int id)
     {
-        return View();
+        var availableEquipment = context.Equipment
+            .Where(e => !context.NinjaHasEquipment.Any(nhe => nhe.EquipmentId == e.Id && nhe.NinjaId == id))
+            .ToList();
+
+        return View(availableEquipment);
     }
 }

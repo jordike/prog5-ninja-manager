@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NinjaManager.Models;
 
@@ -10,9 +11,11 @@ using NinjaManager.Models;
 namespace NinjaManager.Migrations
 {
     [DbContext(typeof(NinjaManagerContext))]
-    partial class NinjaManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20241102140802_Equipment_type_lookup_table")]
+    partial class Equipment_type_lookup_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -319,10 +322,9 @@ namespace NinjaManager.Migrations
 
                     b.HasKey("NinjaId", "EquipmentId");
 
-                    b.HasIndex("EquipmentId");
-
                     b.ToTable("NinjaHasEquipment");
                 });
+
             modelBuilder.Entity("NinjaManager.Models.Equipment", b =>
                 {
                     b.HasOne("NinjaManager.Models.EquipmentType", "EquipmentType")

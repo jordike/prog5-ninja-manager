@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NinjaManager.Models
 {
@@ -9,5 +10,8 @@ namespace NinjaManager.Models
 
         [ForeignKey("Equipment")]
         public int EquipmentId { get; set; }
+
+        [Required]
+        public int ValuePaid { get; set; }
     }
 }
