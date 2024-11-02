@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NinjaManager.Models;
 
@@ -10,9 +11,11 @@ using NinjaManager.Models;
 namespace NinjaManager.Migrations
 {
     [DbContext(typeof(NinjaManagerContext))]
-    partial class NinjaManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20241101183658_Equipment_seeds_added")]
+    partial class Equipment_seeds_added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

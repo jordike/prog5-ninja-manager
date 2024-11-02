@@ -10,5 +10,14 @@ public class Equipment
     [Required]
     public string Name { get; set; }
 
+    [Required]
+    public string Type { get; set; }
+    [Required]
+    public int Strength { get; set; }
+    [Required]
+    public int Agility { get; set; }
+    [Required]
+    public int Intelligence { get; set; }
+    [Required]
     public int Value { get; set; }
 }

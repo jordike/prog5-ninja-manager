@@ -1,1 +1,30 @@
-﻿
+﻿@model List<Equipment>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Item Shop</title>
+    <link rel="stylesheet" href="/css/Shop.css" />
+</head>
+<body>
+
+    <h1>Item Shop</h1>
+
+    <div class="item-grid">
+        @foreach (var equipment in Model)
+
+        {
+            <div class="item-card">
+                <h3>@equipment.Type : @equipment.Name</h3>
+                <p>Strength : @equipment.Strength</p>
+                <p>Agility : @equipment.Agility</p>
+                <p>Intelligence : @equipment.Intelligence</p>
+                <p>Value : @equipment.Value Gold</p>
+                <button>Add to Cart</button>
+            </div>
+        }
+    </div>
+
+</body>
+</html>
