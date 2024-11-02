@@ -12,12 +12,18 @@ public class Equipment
 
     [Required]
     public string Type { get; set; }
+
     [Required]
     public int Strength { get; set; }
+
     [Required]
     public int Agility { get; set; }
+
     [Required]
     public int Intelligence { get; set; }
+
     [Required]
     public int Value { get; set; }
+
+    public ICollection<NinjaHasEquipment> NinjaHasEquipment { get; set; }
 }

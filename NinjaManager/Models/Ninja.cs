@@ -11,4 +11,6 @@ public class Ninja
     public string Name { get; set; }
 
     public int Gold { get; set; }
+
+    public List<NinjaHasEquipment> NinjaHasEquipment { get; set; }
 }

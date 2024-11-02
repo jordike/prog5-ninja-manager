@@ -9,6 +9,5 @@ namespace NinjaManager.Models
 
         [ForeignKey("Equipment")]
         public int EquipmentId { get; set; }
-
     }
 }
