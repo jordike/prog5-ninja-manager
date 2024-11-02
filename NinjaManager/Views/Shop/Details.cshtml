@@ -1,4 +1,7 @@
 ﻿@model List<Equipment>
+@{
+    var errorMessage = TempData["Error"] as string;
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,6 +13,14 @@
 <body>
 
     <h1>Item Shop</h1>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+
+    {
+        <div class="alert alert-danger">
+            @errorMessage
+        </div>
+    }
 
     <div class="item-grid">
         @foreach (var equipment in Model)
@@ -23,7 +34,12 @@
                 <p>Agility : @equipment.Agility</p>
                 <p>Intelligence : @equipment.Intelligence</p>
                 <p>Value : @equipment.Value Gold</p>
-                <button>Add to Cart</button>
+
+                <form asp-action="Buy" method="post">
+                    <input type="hidden" name="NinjaId" value="@ViewBag.NinjaId" />
+                    <input type="hidden" name="EquipmentId" value="@equipment.Id" />
+                    <button type="submit">Buy</button>
+                </form>
             </div>
         }
     </div>
