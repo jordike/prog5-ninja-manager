@@ -28,4 +28,6 @@ public class Equipment
 
     [Required]
     public int Value { get; set; }
+
+    public ICollection<NinjaHasEquipment> NinjaHasEquipment { get; set; }
 }

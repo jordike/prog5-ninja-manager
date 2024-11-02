@@ -13,6 +13,5 @@ namespace NinjaManager.Models
 
         [Required]
         public int ValuePaid { get; set; }
-
     }
 }
