@@ -38,13 +38,16 @@ public class ShopController : Controller
 
     public IActionResult Details(int id)
     {
-        var availableEquipment = context.Equipment
-            .Where(e => !context.NinjaHasEquipment.Any(nhe => nhe.EquipmentId == e.Id && nhe.NinjaId == id))
-            .ToList();
+        var ownedEquipment = context.NinjaHasEquipment
+        .Where(nhe => nhe.NinjaId == id)
+        .ToList();
+
+        var equipment = context.Equipment.ToList();
 
         ViewBag.NinjaId = id;
+        ViewBag.OwnedEquipment = ownedEquipment;
 
-        return View(availableEquipment);
+        return View(equipment);
     }
 
     [HttpPost]
@@ -59,7 +62,7 @@ public class ShopController : Controller
         bool enoughGold = context.Ninjas
             .Any(n => n.Id == NinjaId && n.Gold >= equipmentValue);
 
-        if (enoughGold) 
+        if (enoughGold)
         {
             //check voor 1 per catogorie
             var newEquipmentTypeId = context.Equipment
@@ -107,4 +110,38 @@ public class ShopController : Controller
             return RedirectToAction("Details", new { id = NinjaId });
         }
     }
+
+    [HttpPost]
+    public IActionResult Sell(int NinjaId, int EquipmentId)
+    {
+        var ninjaHasEquipment = context.NinjaHasEquipment
+        .FirstOrDefault(nhe => nhe.NinjaId == NinjaId && nhe.EquipmentId == EquipmentId);
+
+        if (ninjaHasEquipment != null)
+        {
+            var valuePaid = ninjaHasEquipment.ValuePaid;
+            var ninja = context.Ninjas.FirstOrDefault(n => n.Id == NinjaId);
+
+            if (ninja != null)
+            {
+                ninja.Gold += valuePaid;
+
+                context.NinjaHasEquipment.Remove(ninjaHasEquipment);
+
+                context.SaveChanges();
+            }
+            else
+            {
+                TempData["Error"] = "Ninja not found.";
+                return RedirectToAction("Details", new { id = NinjaId });
+            }
+        }
+        else
+        {
+            TempData["Error"] = "Equipment not found in inventory.";
+            return RedirectToAction("Details", new { id = NinjaId });
+        }
+
+        return RedirectToAction("Details", new { id = NinjaId });
+    } 
 }
