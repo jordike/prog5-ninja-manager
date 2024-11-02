@@ -1,4 +1,7 @@
 ﻿@model Ninja
+@{
+    var ownedEquipment = ViewBag.OwnedEquipment as List<Equipment>;
+}
 
 <h1>Ninja bewerken</h1>
 
@@ -18,19 +21,39 @@
     </div>
     
     <hr />
-    
-    @* TODO: Calculate these values *@
-    <p>Total strength: 0</p>
-    <p>Total agility: 0</p>
-    <p>Total intelligence: 0</p>
+
+    <p>Total strength: @ownedEquipment.Sum(equipment => equipment.Strength)</p>
+    <p>Total agility: @ownedEquipment.Sum(equipment => equipment.Agility)</p>
+    <p>Total intelligence: @ownedEquipment.Sum(equipment => equipment.Intelligence)</p>
+    <p>Total gear value: @ownedEquipment.Sum(equipment => equipment.Value)</p>
     
     <hr />
     
-    <p>Gear value: 0</p>
-    
     <div class="row">
-        <div class="col">
-
+        <div class="col d-flex flex-column gap-3">
+            @for (int i = 0; i < 3; i++)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <p>
+                            <strong>Head:</strong>
+                            deze petje
+                        </p>
+                        <p>
+                            <strong>Strength:</strong>
+                            5
+                        </p>
+                        <p>
+                            <strong>Agility:</strong>
+                            200
+                        </p>
+                        <p>
+                            <strong>Intelligence:</strong>
+                            -200
+                        </p>
+                    </div>
+                </div>
+            }
         </div>
         
         <div class="col">

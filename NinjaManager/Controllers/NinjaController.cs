@@ -50,6 +50,12 @@ public class NinjaController : Controller
             return RedirectToAction("Index");
         }
 
+        var ninjaEquipment = this.context.NinjaHasEquipment.Where(nhe => nhe.NinjaId == id).ToList();
+        var equipment = this.context.Equipment.ToList();
+        var ownedEquipment = equipment.Where(e => ninjaEquipment.Any(nhe => nhe.EquipmentId == e.Id)).ToList();
+
+        ViewBag.OwnedEquipment = ownedEquipment;
+
         return View(ninja);
     }
 
