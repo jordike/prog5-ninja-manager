@@ -36,18 +36,36 @@ public class ShopController : Controller
     //    return View();
     //}
 
-    public IActionResult Details(int id)
+    public IActionResult Details(int id, int? equipmentTypeId = null)
     {
+        ViewBag.EquipmentTypes = context.EquipmentTypes.ToList();
+
         var ownedEquipment = context.NinjaHasEquipment
         .Where(nhe => nhe.NinjaId == id)
         .ToList();
 
-        var equipment = context.Equipment.ToList();
+        ViewBag.ownedEquipmentId = ownedEquipment.Select(nhe => nhe.EquipmentId);
 
-        ViewBag.NinjaId = id;
-        ViewBag.OwnedEquipment = ownedEquipment;
+        
+        if (equipmentTypeId != null)
+        {
+            var equipment = context.Equipment.Where(e => e.EquipmentTypeId == equipmentTypeId.Value);
 
-        return View(equipment);
+            ViewBag.NinjaId = id;
+            ViewBag.OwnedEquipment = ownedEquipment;
+
+            return View(equipment);
+        }
+        else
+        {
+            var equipment = context.Equipment.ToList();
+
+            ViewBag.NinjaId = id;
+            ViewBag.OwnedEquipment = ownedEquipment;
+
+            return View(equipment);
+
+        }
     }
 
     [HttpPost]

@@ -8,6 +8,7 @@ public partial class NinjaManagerContext : DbContext
 {
     public DbSet<Ninja> Ninjas { get; set; }
     public DbSet<Equipment> Equipment { get; set; }
+    public DbSet<EquipmentType> EquipmentTypes { get; set; }
     public DbSet<NinjaHasEquipment> NinjaHasEquipment { get; set; }
 
     public NinjaManagerContext()
