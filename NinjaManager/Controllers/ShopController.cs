@@ -45,27 +45,23 @@ public class ShopController : Controller
         .ToList();
 
         ViewBag.ownedEquipmentId = ownedEquipment.Select(nhe => nhe.EquipmentId);
+        ViewBag.NinjaId = id;
+        ViewBag.OwnedEquipment = ownedEquipment;
+        ViewBag.SelectedFilter = equipmentTypeId;
 
-        
+        List<Equipment> equipment;
+
         if (equipmentTypeId != null)
         {
-            var equipment = context.Equipment.Where(e => e.EquipmentTypeId == equipmentTypeId.Value);
-
-            ViewBag.NinjaId = id;
-            ViewBag.OwnedEquipment = ownedEquipment;
-
-            return View(equipment);
+            equipment = context.Equipment
+                .Where(e => e.EquipmentTypeId == equipmentTypeId.Value)
+                .ToList();
         }
         else
         {
-            var equipment = context.Equipment.ToList();
-
-            ViewBag.NinjaId = id;
-            ViewBag.OwnedEquipment = ownedEquipment;
-
-            return View(equipment);
-
+            equipment = context.Equipment.ToList();
         }
+        return View(equipment);
     }
 
     [HttpPost]

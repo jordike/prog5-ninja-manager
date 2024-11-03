@@ -4,7 +4,9 @@
     var ownedEquipment = ViewBag.OwnedEquipment as List<NinjaHasEquipment>;
     var ownedEquipmentIds = ViewBag.OwnedEquipmentId;
     var selectedEquipmentTypeId = ViewBag.EquipmentTypes as List<EquipmentType>;
+    var selectedFilter = ViewBag.SelectedFilter as int?;
     var ownedBool = false;
+    var selectedBool = false;
 }
 
 <!DOCTYPE html>
@@ -30,10 +32,12 @@
         <form method="get" action="@Url.Action("Details", new { id = ViewBag.NinjaId })">
             <label for="equipmentTypeFilter">Filter by Equipment Type:</label>
             <select id="equipmentTypeFilter" name="equipmentTypeId" onchange="this.form.submit()">
-                <option value="">-- Select an Equipment Type --</option>
+                selectedBool = SelectedFilter == null;
+                <option value=null selected=@selectedBool>all</option>
                 @foreach (var type in ViewBag.EquipmentTypes)
                 {
-                    <option value="@type.Id">@type.Name</option>
+                    selectedBool = selectedFilter == type.Id;
+                    <option value="@type.Id" selected=@selectedBool>@type.Name</option>
                 }
             </select>
         </form>
