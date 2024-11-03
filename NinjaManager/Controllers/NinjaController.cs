@@ -116,7 +116,12 @@ public class NinjaController : Controller
             return RedirectToAction("Index");
         }
 
+        this.context.NinjaHasEquipment
+            .Where(nhe => nhe.NinjaId == ninja.Id).ToList()
+            .ForEach(nhe => this.context.NinjaHasEquipment.Remove(nhe));
+
         this.context.Ninjas.Remove(ninjaToDelete);
+
         this.context.SaveChanges();
 
         TempData["SuccessMessage"] = "De ninja is verwijderd.";
