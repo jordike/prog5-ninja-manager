@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using NinjaManager.Models;
+using NinjaManager.Data.Models;
 
 namespace NinjaManager;
 
@@ -13,14 +13,15 @@ public class Program
         builder.Services.AddControllersWithViews();
 
         builder.Services.AddDbContext<NinjaManagerContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("NinjaManager")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("NinjaManager"),
+                b => b.MigrationsAssembly("NinjaManager.Data")));
 
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {
-            app.UseExceptionHandler("/Home/Error");
+            app.UseExceptionHandler("/Ninja/Error");
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
@@ -34,7 +35,7 @@ public class Program
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+            pattern: "{controller=Ninja}/{action=Index}/{id?}");
 
         app.Run();
     }
