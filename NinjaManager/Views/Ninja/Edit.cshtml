@@ -15,6 +15,13 @@
 
 <h1>Ninja bewerken</h1>
 
+@if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
 <form asp-action="Edit" method="POST">
     <input type="hidden" asp-for="Id" />
 
@@ -53,7 +60,7 @@
         </div>
     </div>
     
-    <button class="btn btn-primary">Opslaan</button>
+    <button class="btn btn-primary" type="submit">Opslaan</button>
     <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id">Verwijderen</a>
     <a class="btn btn-danger" asp-action="CleanNinja" asp-route-id="@Model.Id">Inventory leegmaken</a>
     <a class="btn btn-secondary" asp-action="Index">Annuleren</a>
