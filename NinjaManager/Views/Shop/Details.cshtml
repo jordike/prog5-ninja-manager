@@ -31,7 +31,7 @@
             <label for="equipmentTypeFilter">Filter by Equipment Type:</label>
             <select id="equipmentTypeFilter" name="equipmentTypeId" onchange="this.form.submit()">
                 selectedBool = SelectedFilter == null;
-                <option value=null selected=@selectedBool>all</option>
+                <option value=null selected=@selectedBool>All</option>
                 @foreach (var type in ViewBag.EquipmentTypes)
                 {
                     selectedBool = selectedFilter == type.Id;

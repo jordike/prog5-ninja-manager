@@ -1,6 +1,7 @@
 ﻿@model Ninja
 @{
     var ownedEquipment = ViewBag.OwnedEquipment as List<Equipment>;
+    var totalValue = ViewBag.TotalValue as int?;
     var headEquipment = ownedEquipment?.Where(equipment => equipment.EquipmentTypeId == 1).FirstOrDefault();
     var chestEquipment = ownedEquipment?.Where(equipment => equipment.EquipmentTypeId == 2).FirstOrDefault();
     var handEquipment  = ownedEquipment?.Where(equipment => equipment.EquipmentTypeId == 3).FirstOrDefault();
@@ -36,13 +37,13 @@
         <input class="form-control" type="number" asp-for="@Model.Gold"/>
         <span class="text-danger" asp-validation-for="@Model.Gold"></span>
     </div>
-    
+
     <hr />
 
     <p>Total strength: @ownedEquipment.Sum(equipment => equipment.Strength)</p>
     <p>Total agility: @ownedEquipment.Sum(equipment => equipment.Agility)</p>
     <p>Total intelligence: @ownedEquipment.Sum(equipment => equipment.Intelligence)</p>
-    <p>Total gear value: @ownedEquipment.Sum(equipment => equipment.Value)</p>
+    <p>Total gear value: @totalValue</p>
     
     <hr />
     

@@ -53,6 +53,7 @@ public class NinjaController : Controller
         }
 
         ViewBag.OwnedEquipment = this._ninjaService.GetOwnedEquipment(ninja);
+        ViewBag.TotalValue = this._ninjaService.getTotalValue(id);
 
         return View(ninja);
     }
