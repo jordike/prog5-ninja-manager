@@ -1,29 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace NinjaManager.Data.Models;
 
+/// <summary>
+/// Represents the database context for the Ninja Manager application.
+/// </summary>
 public partial class NinjaManagerContext : DbContext
 {
+    /// <summary>
+    /// Gets or sets the Ninjas DbSet.
+    /// </summary>
     public DbSet<Ninja> Ninjas { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Equipment DbSet.
+    /// </summary>
     public DbSet<Equipment> Equipment { get; set; }
+
+    /// <summary>
+    /// Gets or sets the EquipmentTypes DbSet.
+    /// </summary>
     public DbSet<EquipmentType> EquipmentTypes { get; set; }
+
+    /// <summary>
+    /// Gets or sets the NinjaHasEquipment DbSet.
+    /// </summary>
     public DbSet<NinjaHasEquipment> NinjaHasEquipment { get; set; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="NinjaManagerContext"/> class.
+    /// </summary>
     public NinjaManagerContext()
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="NinjaManagerContext"/> class with specified options.
+    /// </summary>
+    /// <param name="options">The options to be used by a <see cref="DbContext"/>.</param>
     public NinjaManagerContext(DbContextOptions<NinjaManagerContext> options)
         : base(options)
     {
     }
 
-    // Seed data
+    /// <summary>
+    /// Configures the model that was discovered by convention from the entity types
+    /// exposed in <see cref="DbSet{TEntity}"/> properties on the derived context.
+    /// </summary>
+    /// <param name="modelBuilder">The builder being used to construct the model for this context.</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
         OnModelCreatingPartial(modelBuilder);
 
         modelBuilder.Entity<NinjaHasEquipment>()
@@ -62,8 +88,11 @@ public partial class NinjaManagerContext : DbContext
             new Equipment { Id = 17, Name = "Necklace of the Elements", EquipmentTypeId = 6, Strength = 3, Agility = 3, Intelligence = 5, Value = 120 },
             new Equipment { Id = 18, Name = "Talisman of Protection", EquipmentTypeId = 6, Strength = 1, Agility = 6, Intelligence = 3, Value = 100 }
         );
-    
     }
 
+    /// <summary>
+    /// Allows for additional configuration of the model.
+    /// </summary>
+    /// <param name="modelBuilder">The builder being used to construct the model for this context.</param>
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
