@@ -1,13 +1,12 @@
 ﻿@model List<Equipment>
 @{
-var errorMessage = TempData["Error"] as string;
-var ownedEquipment = ViewBag.OwnedEquipment as List<NinjaHasEquipment>;
-var selectedFilter = ViewBag.SelectedFilter as int?;
-var ownedBool = false;
-var selectedBool = false;
+    var errorMessage = TempData["Error"] as string;
+    var ownedEquipment = ViewBag.OwnedEquipment as List<NinjaHasEquipment>;
+    var selectedFilter = ViewBag.SelectedFilter as int?;
+    var ownedBool = false;
+    var selectedBool = false;
 
-ViewData["Title"] = "Shop overzicht";
-
+    ViewData["Title"] = "Shop overzicht";
 }
 @section Styles {
     <link rel="stylesheet" href="~/css/Shop.css" />

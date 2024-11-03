@@ -25,7 +25,7 @@ public class ShopController : Controller
     }
 
     public IActionResult Details(int id, int? equipmentTypeId = null)
-        {
+    {
         ViewBag.EquipmentTypes = this._equipmentService.GetAllEquipmentTypes();
 
         var ninja = this._ninjaService.GetNinja(id);
