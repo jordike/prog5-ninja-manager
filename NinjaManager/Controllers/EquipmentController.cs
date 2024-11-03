@@ -18,7 +18,7 @@ namespace NinjaManager.Controllers
         public IActionResult Index()
         {
 
-            var equipment = context.Equipment.Include(e => e.EquipmentType)
+            var equipment = this.context.Equipment.Include(e => e.EquipmentType)
                 .ToList();
 
             return View(equipment);
@@ -26,7 +26,7 @@ namespace NinjaManager.Controllers
 
         public IActionResult Create()
         {
-            ViewBag.EquipmentTypes = context.EquipmentTypes.ToList();
+            ViewBag.EquipmentTypes = this.context.EquipmentTypes.ToList();
             var Equipment = new Equipment();
             
             return View(Equipment);
@@ -53,7 +53,7 @@ namespace NinjaManager.Controllers
 
         public IActionResult Edit(int id) 
         {
-            ViewBag.EquipmentTypes = context.EquipmentTypes.ToList();
+            ViewBag.EquipmentTypes = this.context.EquipmentTypes.ToList();
             var equipment = this.context.Equipment.Find(id);
             
             if (equipment == null) 
@@ -118,6 +118,8 @@ namespace NinjaManager.Controllers
 
             foreach (var NinjaHasEquipmentToDelete in NinjaHasEquipment)
             {
+                var NinjaToUpdate = this.context.Ninjas.Find(NinjaHasEquipmentToDelete.NinjaId);
+                NinjaToUpdate.Gold += NinjaHasEquipmentToDelete.ValuePaid;
                 this.context.NinjaHasEquipment.Remove(NinjaHasEquipmentToDelete);
             }
 
