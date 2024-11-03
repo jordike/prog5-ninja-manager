@@ -6,29 +6,29 @@ namespace NinjaManager.Controllers;
 
 public class ShopController : Controller
 {
-    private readonly ShopService shopService;
-    private readonly NinjaService ninjaService;
-    private readonly EquipmentService equipmentService;
+    private readonly ShopService _shopService;
+    private readonly NinjaService _ninjaService;
+    private readonly EquipmentService _equipmentService;
 
     public ShopController(NinjaManagerContext context)
     {
-        this.shopService = new ShopService(context);
-        this.ninjaService = new NinjaService(context);
-        this.equipmentService = new EquipmentService(context);
+        this._shopService = new ShopService(context);
+        this._ninjaService = new NinjaService(context);
+        this._equipmentService = new EquipmentService(context);
     }
 
     public IActionResult Index()
     {
-        var ninjaList = this.ninjaService.GetAllNinjas();
+        var ninjaList = this._ninjaService.GetAllNinjas();
 
         return View(ninjaList);
     }
 
     public IActionResult Details(int id, int? equipmentTypeId = null)
     {
-        ViewBag.EquipmentTypes = this.equipmentService.GetAllEquipmentTypes();
+        ViewBag.EquipmentTypes = this._equipmentService.GetAllEquipmentTypes();
 
-        var ninja = this.ninjaService.GetNinja(id);
+        var ninja = this._ninjaService.GetNinja(id);
 
         if (ninja == null)
         {
@@ -37,15 +37,15 @@ public class ShopController : Controller
             return RedirectToAction("Index");
         }
 
-        var ownedEquipment = this.ninjaService.GetOwnedEquipment(ninja);
+        var ownedEquipment = this._ninjaService.GetOwnedEquipment(ninja);
 
         ViewBag.NinjaId = id;
         ViewBag.OwnedEquipment = ownedEquipment;
         ViewBag.SelectedFilter = equipmentTypeId;
 
         var equipment = equipmentTypeId != null
-            ? this.shopService.GetAllEquipmentOfTypeId((int)equipmentTypeId)
-            : this.shopService.GetAllEquipment();
+            ? this._shopService.GetAllEquipmentOfTypeId((int)equipmentTypeId)
+            : this._shopService.GetAllEquipment();
 
         return View(equipment);
     }
@@ -54,7 +54,7 @@ public class ShopController : Controller
     public IActionResult Buy(int ninjaId, int equipmentId)
     {
         // Check voor enough money
-        var equipment = this.shopService.GetEquipment(equipmentId);
+        var equipment = this._shopService.GetEquipment(equipmentId);
 
         if (equipment == null)
         {
@@ -63,7 +63,7 @@ public class ShopController : Controller
             return RedirectToAction("Details", new { id = ninjaId });
         }
 
-        var ninja = this.ninjaService.GetNinja(ninjaId);
+        var ninja = this._ninjaService.GetNinja(ninjaId);
 
         if (ninja == null)
         {
@@ -72,7 +72,7 @@ public class ShopController : Controller
             return RedirectToAction("Details", new { id = ninjaId });
         }
 
-        var enoughGold = this.shopService.NinjaHasEnoughGold(ninja, equipment.Value);
+        var enoughGold = this._shopService.NinjaHasEnoughGold(ninja, equipment.Value);
 
         if (!enoughGold)
         {
@@ -83,7 +83,7 @@ public class ShopController : Controller
         }
 
         // Check voor 1 per catogorie
-        var occupiedSlot = this.shopService.IsEquipmentTypeSlotOccupied(ninja, equipment.EquipmentTypeId);
+        var occupiedSlot = this._shopService.IsEquipmentTypeSlotOccupied(ninja, equipment.EquipmentTypeId);
 
         if (occupiedSlot)
         {
@@ -93,7 +93,7 @@ public class ShopController : Controller
             return RedirectToAction("Details", new { id = ninjaId });
         }
 
-        this.shopService.BuyEquipment(ninja, equipment);
+        this._shopService.BuyEquipment(ninja, equipment);
 
         return RedirectToAction("Details", new { id = ninjaId });
     }
@@ -101,7 +101,7 @@ public class ShopController : Controller
     [HttpPost]
     public IActionResult Sell(int ninjaId, int equipmentId)
     {
-        var ninjaHasEquipment = this.equipmentService.GetNinjaHasEquipment(ninjaId, equipmentId);
+        var ninjaHasEquipment = this._equipmentService.GetNinjaHasEquipment(ninjaId, equipmentId);
 
         if (ninjaHasEquipment == null)
         {
@@ -110,7 +110,7 @@ public class ShopController : Controller
             return RedirectToAction("Details", new { id = ninjaId });
         }
 
-        var ninja = this.ninjaService.GetNinja(ninjaId);
+        var ninja = this._ninjaService.GetNinja(ninjaId);
 
         if (ninja == null)
         {
@@ -119,7 +119,7 @@ public class ShopController : Controller
             return RedirectToAction("Details", new { id = ninjaId });
         }
 
-        this.shopService.SellEquipment(ninja, ninjaHasEquipment);
+        this._shopService.SellEquipment(ninja, ninjaHasEquipment);
 
         return RedirectToAction("Details", new { id = ninjaId });
     } 
