@@ -6,14 +6,12 @@ namespace NinjaManager.Controllers;
 
 public class ShopController : Controller
 {
-    private readonly NinjaManagerContext context;
     private readonly ShopService shopService;
     private readonly NinjaService ninjaService;
     private readonly EquipmentService equipmentService;
 
     public ShopController(NinjaManagerContext context)
     {
-        this.context = context;
         this.shopService = new ShopService(context);
         this.ninjaService = new NinjaService(context);
         this.equipmentService = new EquipmentService(context);
@@ -28,7 +26,7 @@ public class ShopController : Controller
 
     public IActionResult Details(int id, int? equipmentTypeId = null)
     {
-        ViewBag.EquipmentTypes = this.context.EquipmentTypes.ToList();
+        ViewBag.EquipmentTypes = this.equipmentService.GetAllEquipmentTypes();
 
         var ninja = this.ninjaService.GetNinja(id);
 
@@ -112,7 +110,7 @@ public class ShopController : Controller
             return RedirectToAction("Details", new { id = ninjaId });
         }
 
-        var ninja = this.context.Ninjas.FirstOrDefault(n => n.Id == ninjaId);
+        var ninja = this.ninjaService.GetNinja(ninjaId);
 
         if (ninja == null)
         {

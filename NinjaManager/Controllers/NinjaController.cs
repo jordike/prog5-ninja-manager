@@ -6,12 +6,10 @@ namespace NinjaManager.Controllers;
 
 public class NinjaController : Controller
 {
-    private readonly NinjaManagerContext context;
     private readonly NinjaService ninjaService;
 
     public NinjaController(NinjaManagerContext context)
     {
-        this.context = context;
         this.ninjaService = new NinjaService(context);
     }
 

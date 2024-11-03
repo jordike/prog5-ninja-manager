@@ -6,12 +6,10 @@ namespace NinjaManager.Controllers
 {
     public class EquipmentController : Controller
     {
-        private readonly NinjaManagerContext context;
         private readonly EquipmentService equipmentService;
 
         public EquipmentController(NinjaManagerContext context)
         { 
-            this.context = context;
             this.equipmentService = new EquipmentService(context);
         }
 
