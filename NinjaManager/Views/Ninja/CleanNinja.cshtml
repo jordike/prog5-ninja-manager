@@ -8,5 +8,5 @@
     <input type="hidden" asp-for="Id" />
 
     <button class="btn btn-danger" type="submit">Ja</button>
-    <a class="btn btn-secondary" asp-action="Index">Nee</a>
+    <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@Model.Id">Nee</a>
 </form>

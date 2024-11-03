@@ -74,7 +74,7 @@ public class NinjaController : Controller
 
         this.context.SaveChanges();
 
-        return RedirectToAction("Index");
+        return RedirectToAction("Edit", ninja);
     }
 
     public IActionResult Delete(int id)
