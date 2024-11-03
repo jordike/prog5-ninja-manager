@@ -38,9 +38,9 @@ public class ShopController : Controller
 
     public IActionResult Details(int id, int? equipmentTypeId = null)
     {
-        ViewBag.EquipmentTypes = context.EquipmentTypes.ToList();
+        ViewBag.EquipmentTypes = this.context.EquipmentTypes.ToList();
 
-        var ownedEquipment = context.NinjaHasEquipment
+        var ownedEquipment = this.context.NinjaHasEquipment
         .Where(nhe => nhe.NinjaId == id)
         .ToList();
 
@@ -53,13 +53,13 @@ public class ShopController : Controller
 
         if (equipmentTypeId != null)
         {
-            equipment = context.Equipment
+            equipment = this.context.Equipment
                 .Where(e => e.EquipmentTypeId == equipmentTypeId.Value)
                 .ToList();
         }
         else
         {
-            equipment = context.Equipment.ToList();
+            equipment = this.context.Equipment.ToList();
         }
         return View(equipment);
     }
@@ -68,25 +68,25 @@ public class ShopController : Controller
     public IActionResult Buy(int NinjaId, int EquipmentId)
     {
         //check voor enough money
-        var equipmentValue = context.Equipment
+        var equipmentValue = this.context.Equipment
             .Where(e => e.Id == EquipmentId)
             .Select(e => e.Value)
             .FirstOrDefault();
 
-        bool enoughGold = context.Ninjas
+        bool enoughGold = this.context.Ninjas
             .Any(n => n.Id == NinjaId && n.Gold >= equipmentValue);
 
         if (enoughGold)
         {
             //check voor 1 per catogorie
-            var newEquipmentTypeId = context.Equipment
+            var newEquipmentTypeId = this.context.Equipment
                 .Where(e => e.Id == EquipmentId)
                 .Select(e => e.EquipmentTypeId)
                 .FirstOrDefault();
 
-            bool occupiedSlot = context.NinjaHasEquipment
+            bool occupiedSlot = this.context.NinjaHasEquipment
                 .Any(nhe => nhe.NinjaId == NinjaId &&
-                    context.Equipment
+                    this.context.Equipment
                         .Where(e => e.Id == nhe.EquipmentId)
                         .Select(e => e.EquipmentTypeId)
                         .FirstOrDefault() == newEquipmentTypeId);
@@ -94,11 +94,11 @@ public class ShopController : Controller
             if (!occupiedSlot)
             {
                 //schrijven naar db
-                var ninja = context.Ninjas.Find(NinjaId);
+                var ninja = this.context.Ninjas.Find(NinjaId);
                 if (ninja != null)
                 {
                     ninja.Gold -= equipmentValue;
-                    context.NinjaHasEquipment.Add(new NinjaHasEquipment
+                    this.context.NinjaHasEquipment.Add(new NinjaHasEquipment
                     {
                         NinjaId = NinjaId,
                         EquipmentId = EquipmentId,
@@ -106,7 +106,7 @@ public class ShopController : Controller
                     });
                 }
 
-                context.SaveChanges();
+                this.context.SaveChanges();
 
                 return RedirectToAction("Details", new { id = NinjaId });
             }
@@ -128,21 +128,21 @@ public class ShopController : Controller
     [HttpPost]
     public IActionResult Sell(int NinjaId, int EquipmentId)
     {
-        var ninjaHasEquipment = context.NinjaHasEquipment
+        var ninjaHasEquipment = this.context.NinjaHasEquipment
         .FirstOrDefault(nhe => nhe.NinjaId == NinjaId && nhe.EquipmentId == EquipmentId);
 
         if (ninjaHasEquipment != null)
         {
             var valuePaid = ninjaHasEquipment.ValuePaid;
-            var ninja = context.Ninjas.FirstOrDefault(n => n.Id == NinjaId);
+            var ninja = this.context.Ninjas.FirstOrDefault(n => n.Id == NinjaId);
 
             if (ninja != null)
             {
                 ninja.Gold += valuePaid;
 
-                context.NinjaHasEquipment.Remove(ninjaHasEquipment);
+                this.context.NinjaHasEquipment.Remove(ninjaHasEquipment);
 
-                context.SaveChanges();
+                this.context.SaveChanges();
             }
             else
             {

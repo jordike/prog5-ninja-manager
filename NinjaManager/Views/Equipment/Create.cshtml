@@ -1,0 +1,46 @@
+﻿@model Equipment
+
+<form method="post">
+    <div class="form-group mb-3">
+        <span class="text-danger mb-2" asp-validation-for="@Model.Name"></span>
+        <label class="mb-2" asp-for="@Model.Name"></label>
+        <input class="form-control" type="text" asp-for="@Model.Name" />
+    </div>
+
+     <div class="form-group mb-3">
+         <span class="text-danger mb-2" asp-validation-for="EquipmentTypeId"></span>
+         <label class="mb-2" asp-for="EquipmentTypeId"></label>
+         <select class="form-control" asp-for="EquipmentTypeId" asp-items="@(new SelectList(ViewBag.EquipmentTypes, "Id", "Name"))">
+         </select>
+     </div>
+
+    <div class="form-group mb-3">
+        <span class="text-danger mb-2" asp-validation-for="@Model.Strength"></span>
+        <label class="mb-2" asp-for="@Model.Strength"></label>
+        <input class="form-control" type="number" asp-for="@Model.Strength" />
+    </div>
+
+    <div class="form-group mb-3">
+        <span class="text-danger mb-2" asp-validation-for="@Model.Agility"></span>
+        <label class="mb-2" asp-for="@Model.Agility"></label>
+        <input class="form-control" type="number" asp-for="@Model.Agility" />
+    </div>
+
+    <div class="form-group mb-3">
+        <span class="text-danger mb-2" asp-validation-for="@Model.Intelligence"></span>
+        <label class="mb-2" asp-for="@Model.Intelligence"></label>
+        <input class="form-control" type="number" asp-for="@Model.Intelligence" />
+    </div>
+
+    <div class="form-group mb-3">
+        <span class="text-danger mb-2" asp-validation-for="@Model.Value"></span>
+        <label class="mb-2" asp-for="@Model.Value"></label>
+        <input class="form-control" type="number" asp-for="@Model.Value" min="0"/>
+    </div>
+
+    <div class="form-group mb-3">
+        <button class="btn btn-primary" type="submit">Create</button>
+
+        <a class="btn btn-secondary" type="button" asp-action="Index">Cancel</a>
+    </div>
+</form>
