@@ -11,13 +11,11 @@ namespace NinjaManager.Controllers
 
         public EquipmentController(NinjaManagerContext context)
         { 
-        this.context = context;
+            this.context = context;
         }
-
 
         public IActionResult Index()
         {
-
             var equipment = this.context.Equipment.Include(e => e.EquipmentType)
                 .ToList();
 

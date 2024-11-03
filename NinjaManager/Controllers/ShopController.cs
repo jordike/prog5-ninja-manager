@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using NinjaManager.Data.Models;
 
 namespace NinjaManager.Controllers;
 
 public class ShopController : Controller
 {
-
     private readonly NinjaManagerContext context;
 
     public ShopController(NinjaManagerContext context)
@@ -20,21 +18,6 @@ public class ShopController : Controller
 
         return View(ninjaList);
     }
-
-    //public IActionResult Create()
-    //{
-    //    return View();
-    //}
-
-    //public IActionResult Edit(int id)
-    //{
-    //    return View();
-    //}
-
-    //public IActionResult Delete(int id)
-    //{
-    //    return View();
-    //}
 
     public IActionResult Details(int id, int? equipmentTypeId = null)
     {
