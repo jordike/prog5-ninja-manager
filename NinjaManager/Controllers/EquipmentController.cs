@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using NinjaManager.Models;
+using NinjaManager.Data.Models;
 
 namespace NinjaManager.Controllers
 {
