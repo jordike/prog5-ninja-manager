@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using NinjaManager.BusinessLogic.Services;
 using NinjaManager.Data.Models;
 
 namespace NinjaManager.Controllers
@@ -8,32 +7,33 @@ namespace NinjaManager.Controllers
     public class EquipmentController : Controller
     {
         private readonly NinjaManagerContext context;
+        private readonly EquipmentService equipmentService;
 
         public EquipmentController(NinjaManagerContext context)
         { 
             this.context = context;
+            this.equipmentService = new EquipmentService(context);
         }
 
         public IActionResult Index()
         {
-            var equipment = this.context.Equipment.Include(e => e.EquipmentType)
-                .ToList();
+            var equipment = this.equipmentService.GetAllEquipment();
 
             return View(equipment);
         }
 
         public IActionResult Create()
         {
-            ViewBag.EquipmentTypes = this.context.EquipmentTypes.ToList();
-            var Equipment = new Equipment();
-            
-            return View(Equipment);
+            ViewBag.EquipmentTypes = this.equipmentService.GetAllEquipmentTypes();
+
+            // Temporary equipment to prevent null reference exception.
+            return View(new Equipment());
         }
 
         [HttpPost]
         public IActionResult Create(Equipment equipment)
         {
-            this.context.Add(
+            this.equipmentService.AddNewEquipment(
                 new Equipment
                 {
                     Name = equipment.Name,
@@ -44,15 +44,15 @@ namespace NinjaManager.Controllers
                     Value = equipment.Value
                 }
             );
-            this.context.SaveChanges();
 
             return RedirectToAction("Index");
         }
 
         public IActionResult Edit(int id) 
         {
-            ViewBag.EquipmentTypes = this.context.EquipmentTypes.ToList();
-            var equipment = this.context.Equipment.Find(id);
+            ViewBag.EquipmentTypes = this.equipmentService.GetAllEquipmentTypes();
+
+            var equipment = this.equipmentService.GetEquipment(id);
             
             if (equipment == null) 
             {
@@ -65,7 +65,7 @@ namespace NinjaManager.Controllers
         [HttpPost]
         public IActionResult Edit(Equipment equipment)
         {
-            var equipmentToUpdate = this.context.Equipment.Find(equipment.Id);
+            var equipmentToUpdate = this.equipmentService.GetEquipment(equipment.Id);
 
             if (equipmentToUpdate == null)
             {
@@ -79,23 +79,21 @@ namespace NinjaManager.Controllers
             equipmentToUpdate.Intelligence = equipment.Intelligence;
             equipmentToUpdate.Value = equipment.Value;
 
-            this.context.SaveChanges();
+            this.equipmentService.UpdateEquipment(equipmentToUpdate);
 
             return RedirectToAction("Index");
         }
+
         public IActionResult Delete(int id)
         {
-            var equipment = this.context.Equipment.Find(id);
+            var equipment = this.equipmentService.GetEquipment(id);
 
             if (equipment == null)
             {
                 return RedirectToAction("Index");
             }
 
-            var NinjaHasEquipmentCount = this.context.NinjaHasEquipment
-                .Count(nhe => nhe.EquipmentId == equipment.Id);
-
-            TempData["Count"] = NinjaHasEquipmentCount;
+            TempData["Count"] = this.equipmentService.GetEquipmentUsageCount(equipment);
 
             return View(equipment);
         }
@@ -103,26 +101,14 @@ namespace NinjaManager.Controllers
         [HttpPost]
         public IActionResult Delete(Equipment equipment)
         {
-            var EquipmentToDelete = this.context.Equipment.Find(equipment.Id);
+            var equipmentToDelete = this.equipmentService.GetEquipment(equipment.Id);
 
-            if (EquipmentToDelete == null)
+            if (equipmentToDelete == null)
             {
                 return RedirectToAction("Index");
             }
 
-            var NinjaHasEquipment = this.context.NinjaHasEquipment
-                .Where(nhe => nhe.EquipmentId == equipment.Id)
-                .ToList();
-
-            foreach (var NinjaHasEquipmentToDelete in NinjaHasEquipment)
-            {
-                var NinjaToUpdate = this.context.Ninjas.Find(NinjaHasEquipmentToDelete.NinjaId);
-                NinjaToUpdate.Gold += NinjaHasEquipmentToDelete.ValuePaid;
-                this.context.NinjaHasEquipment.Remove(NinjaHasEquipmentToDelete);
-            }
-
-            this.context.Equipment.Remove(EquipmentToDelete);
-            this.context.SaveChanges();
+            this.equipmentService.RemoveEquipment(equipmentToDelete);
 
             return RedirectToAction("Index");
         }
