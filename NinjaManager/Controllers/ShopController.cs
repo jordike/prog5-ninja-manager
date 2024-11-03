@@ -25,7 +25,7 @@ public class ShopController : Controller
     }
 
     public IActionResult Details(int id, int? equipmentTypeId = null)
-    {
+        {
         ViewBag.EquipmentTypes = this._equipmentService.GetAllEquipmentTypes();
 
         var ninja = this._ninjaService.GetNinja(id);
@@ -37,7 +37,7 @@ public class ShopController : Controller
             return RedirectToAction("Index");
         }
 
-        var ownedEquipment = this._ninjaService.GetOwnedEquipment(ninja);
+        var ownedEquipment = this._shopService.GetOwnedEquipment(id);
 
         ViewBag.NinjaId = id;
         ViewBag.OwnedEquipment = ownedEquipment;
@@ -88,7 +88,7 @@ public class ShopController : Controller
         if (occupiedSlot)
         {
             // Error message over geen empty slot
-            TempData["Error"] = "You already own a piece of equipment from this categorie.";
+            TempData["Error"] = "You already own a piece of equipment from this category.";
 
             return RedirectToAction("Details", new { id = ninjaId });
         }

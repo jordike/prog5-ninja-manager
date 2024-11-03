@@ -1,6 +1,10 @@
 ﻿@model Equipment
 
-<h1>Equipment bewerken</h1>
+@{
+    ViewData["Title"] = "Equipment aanpassen";
+}
+
+<h1>Equipment aanpassen</h1>
 
 <form asp-action="Edit" method="POST">
     <input type="hidden" asp-for="Id" />

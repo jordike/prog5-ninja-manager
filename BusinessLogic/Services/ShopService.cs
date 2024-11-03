@@ -21,6 +21,13 @@ public class ShopService
         return this.context.Equipment.ToList();
     }
 
+    public List<NinjaHasEquipment> GetOwnedEquipment(int id) 
+    {
+        return this.context.NinjaHasEquipment
+            .Where(nhe => nhe.NinjaId == id)
+            .ToList();
+    }
+
     public List<Equipment> GetAllEquipmentOfTypeId(int equipmentTypeId)
     {
         return this.context.Equipment

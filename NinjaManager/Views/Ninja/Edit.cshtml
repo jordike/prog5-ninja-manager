@@ -8,13 +8,15 @@
     var feetEquipment = ownedEquipment?.Where(equipment => equipment.EquipmentTypeId == 4).FirstOrDefault();
     var ringEquipment = ownedEquipment?.Where(equipment => equipment.EquipmentTypeId == 5).FirstOrDefault();
     var necklaceEquipment = ownedEquipment?.Where(equipment => equipment.EquipmentTypeId == 6).FirstOrDefault();
+
+    ViewData["Title"] = "Ninja aanpassen";
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/ninja.css" />
 }
 
-<h1>Ninja bewerken</h1>
+<h1>Ninja aanpassen</h1>
 
 @if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
 {

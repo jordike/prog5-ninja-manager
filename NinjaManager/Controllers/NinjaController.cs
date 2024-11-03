@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NinjaManager.BusinessLogic.Services;
 using NinjaManager.Data.Models;
+using System.Diagnostics;
 
 namespace NinjaManager.Controllers;
 
@@ -139,5 +140,11 @@ public class NinjaController : Controller
         }
 
         return RedirectToAction("Edit", ninja.Id);
+    }
+
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
