@@ -29,16 +29,21 @@ public class NinjaController : Controller
     [HttpPost]
     public IActionResult Create(Ninja ninja)
     {
-        this.context.Add(
-            new Ninja
-            {
-                Name = ninja.Name,
-                Gold = ninja.Gold
-            }
-        );
-        this.context.SaveChanges();
+        if (ModelState.IsValid)
+        {
+            this.context.Add(
+                new Ninja
+                {
+                    Name = ninja.Name,
+                    Gold = ninja.Gold
+                }
+            );
+            this.context.SaveChanges();
 
-        return RedirectToAction("Index");
+            return RedirectToAction("Index");
+        }
+
+        return View(ninja);
     }
 
     public IActionResult Edit(int id)
@@ -62,19 +67,24 @@ public class NinjaController : Controller
     [HttpPost]
     public IActionResult Edit(Ninja ninja)
     {
-        var ninjaToUpdate = this.context.Ninjas.Find(ninja.Id);
-
-        if (ninjaToUpdate == null)
+        if (ModelState.IsValid)
         {
-            return RedirectToAction("Index");
+            var ninjaToUpdate = this.context.Ninjas.Find(ninja.Id);
+
+            if (ninjaToUpdate == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            ninjaToUpdate.Name = ninja.Name;
+            ninjaToUpdate.Gold = ninja.Gold;
+
+            this.context.SaveChanges();
+
+            return RedirectToAction("Edit", ninja);
         }
 
-        ninjaToUpdate.Name = ninja.Name;
-        ninjaToUpdate.Gold = ninja.Gold;
-
-        this.context.SaveChanges();
-
-        return RedirectToAction("Edit", ninja);
+        return View(ninja);
     }
 
     public IActionResult Delete(int id)
