@@ -41,10 +41,8 @@ public class NinjaController : Controller
     /// <returns>A view displaying the create ninja form.</returns>  
     public IActionResult Create()
     {
-        // Temporary ninja to prevent null reference exception.  
-        var ninja = new Ninja();
-
-        return View(ninja);
+        // Temporary ninja to prevent null reference exception.
+        return View(new Ninja());
     }
 
     /// <summary>  
@@ -55,16 +53,17 @@ public class NinjaController : Controller
     [HttpPost]
     public IActionResult Create(Ninja ninja)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            this._ninjaService.AddNewNinja(ninja);
-
-            ViewBag.OwnedEquipment = this._ninjaService.GetOwnedEquipment(ninja);
-
-            return RedirectToAction("Edit", ninja.Id);
+            return View(ninja);
         }
 
-        return View(ninja);
+        this._ninjaService.AddNewNinja(ninja);
+
+        ViewBag.OwnedEquipment = this._ninjaService.GetOwnedEquipment(ninja);
+
+        return RedirectToAction("Edit", ninja.Id);
+
     }
 
     /// <summary>  

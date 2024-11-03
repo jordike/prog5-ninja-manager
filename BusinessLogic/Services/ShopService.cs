@@ -96,8 +96,8 @@ public class ShopService
     public void BuyEquipment(Ninja ninja, Equipment equipment)
     {
         ninja.Gold -= equipment.Value;
-        this.context.Ninjas.Update(ninja);
 
+        this.context.Ninjas.Update(ninja);
         this.context.NinjaHasEquipment.Add(new NinjaHasEquipment
         {
             NinjaId = ninja.Id,

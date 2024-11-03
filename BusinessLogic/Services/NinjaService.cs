@@ -67,10 +67,9 @@ public class NinjaService
     /// </summary>
     /// <param name="id">The ID of the ninja.</param>
     /// <returns>The total value of the equipment owned by the ninja.</returns>
-    public int getTotalValue(int id)
+    public int GetTotalValue(int id)
     {
-        var totalValue = this.context.NinjaHasEquipment.Where(nhe => nhe.NinjaId == id).Sum(nhe => nhe.ValuePaid);
-        return totalValue;
+        return this.context.NinjaHasEquipment.Where(nhe => nhe.NinjaId == id).Sum(nhe => nhe.ValuePaid);
     }
 
     /// <summary>
