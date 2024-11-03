@@ -1,1 +1,67 @@
-﻿
+﻿@model Ninja
+@{
+    var ownedEquipment = ViewBag.OwnedEquipment as List<Equipment>;
+    var headEquipment = ownedEquipment?.Where(equipment => equipment.EquipmentTypeId == 1).FirstOrDefault();
+    var chestEquipment = ownedEquipment?.Where(equipment => equipment.EquipmentTypeId == 2).FirstOrDefault();
+    var handEquipment  = ownedEquipment?.Where(equipment => equipment.EquipmentTypeId == 3).FirstOrDefault();
+    var feetEquipment = ownedEquipment?.Where(equipment => equipment.EquipmentTypeId == 4).FirstOrDefault();
+    var ringEquipment = ownedEquipment?.Where(equipment => equipment.EquipmentTypeId == 5).FirstOrDefault();
+    var necklaceEquipment = ownedEquipment?.Where(equipment => equipment.EquipmentTypeId == 6).FirstOrDefault();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/ninja.css" />
+}
+
+<h1>Ninja bewerken</h1>
+
+@if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<form asp-action="Edit" method="POST">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group mb-1">
+        <label class="form-label" asp-for="@Model.Name">Ninja:</label>
+        <input class="form-control" type="text" asp-for="@Model.Name"/>
+        <span class="text-danger" asp-validation-for="@Model.Name"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label" asp-for="@Model.Gold"></label>
+        <input class="form-control" type="number" asp-for="@Model.Gold"/>
+        <span class="text-danger" asp-validation-for="@Model.Gold"></span>
+    </div>
+    
+    <hr />
+
+    <p>Total strength: @ownedEquipment.Sum(equipment => equipment.Strength)</p>
+    <p>Total agility: @ownedEquipment.Sum(equipment => equipment.Agility)</p>
+    <p>Total intelligence: @ownedEquipment.Sum(equipment => equipment.Intelligence)</p>
+    <p>Total gear value: @ownedEquipment.Sum(equipment => equipment.Value)</p>
+    
+    <hr />
+    
+    <div class="row">
+        <div class="col d-flex flex-column gap-3 mb-3">
+            <partial name="_NinjaEquipmentPartial" model="(headEquipment, Model.Id)"  />
+            <partial name="_NinjaEquipmentPartial" model="(handEquipment, Model.Id)" />
+            <partial name="_NinjaEquipmentPartial" model="(feetEquipment, Model.Id)" />
+        </div>
+        
+        <div class="col d-flex flex-column gap-3 mb-3">
+            <partial name="_NinjaEquipmentPartial" model="(necklaceEquipment, Model.Id)" />
+            <partial name="_NinjaEquipmentPartial" model="(chestEquipment, Model.Id)" />
+            <partial name="_NinjaEquipmentPartial" model="(ringEquipment, Model.Id)" />
+        </div>
+    </div>
+    
+    <button class="btn btn-primary" type="submit">Opslaan</button>
+    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id">Verwijderen</a>
+    <a class="btn btn-danger" asp-action="CleanNinja" asp-route-id="@Model.Id">Inventory leegmaken</a>
+    <a class="btn btn-secondary" asp-action="Index">Annuleren</a>
+</form>

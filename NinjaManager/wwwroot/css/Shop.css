@@ -1,0 +1,36 @@
+﻿.item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    padding: 20px;
+}
+
+.item-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .item-card h3 {
+        margin: 0;
+        font-size: 1.2em;
+    }
+
+    .item-card p {
+        color: #555;
+    }
+
+    .item-card button {
+        padding: 8px 16px;
+        border: none;
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .item-card button:hover {
+            background-color: #45a049;
+        }
