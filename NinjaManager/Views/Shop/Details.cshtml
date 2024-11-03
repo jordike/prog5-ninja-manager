@@ -1,4 +1,13 @@
 ﻿@model List<Equipment>
+@{
+    var errorMessage = TempData["Error"] as string;
+    var ownedEquipment = ViewBag.OwnedEquipment as List<NinjaHasEquipment>;
+    var ownedEquipmentIds = ViewBag.OwnedEquipmentId;
+    var selectedEquipmentTypeId = ViewBag.EquipmentTypes as List<EquipmentType>;
+    var selectedFilter = ViewBag.SelectedFilter as int?;
+    var ownedBool = false;
+    var selectedBool = false;
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,20 +20,71 @@
 
     <h1>Item Shop</h1>
 
+    @if (!string.IsNullOrEmpty(errorMessage))
+
+    {
+        <div class="alert alert-danger">
+            @errorMessage
+        </div>
+    }
+
+    <div>
+        <form method="get" action="@Url.Action("Details", new { id = ViewBag.NinjaId })">
+            <label for="equipmentTypeFilter">Filter by Equipment Type:</label>
+            <select id="equipmentTypeFilter" name="equipmentTypeId" onchange="this.form.submit()">
+                selectedBool = SelectedFilter == null;
+                <option value=null selected=@selectedBool>all</option>
+                @foreach (var type in ViewBag.EquipmentTypes)
+                {
+                    selectedBool = selectedFilter == type.Id;
+                    <option value="@type.Id" selected=@selectedBool>@type.Name</option>
+                }
+            </select>
+        </form>
+    </div>
+
     <div class="item-grid">
         @foreach (var equipment in Model)
 
-
-
         {
-            <div class="item-card">
-                <h3>@equipment.EquipmentType : @equipment.Name</h3>
-                <p>Strength : @equipment.Strength</p>
-                <p>Agility : @equipment.Agility</p>
-                <p>Intelligence : @equipment.Intelligence</p>
-                <p>Value : @equipment.Value Gold</p>
-                <button>Add to Cart</button>
-            </div>
+            foreach(var owned in ownedEquipment){
+                if(owned.EquipmentId == equipment.Id){
+                    var ownedItem = owned;
+
+                    <div class="item-card">
+                        <h3>@equipment.EquipmentType.Name : @equipment.Name</h3>
+                        <p>Strength : @equipment.Strength</p>
+                        <p>Agility : @equipment.Agility</p>
+                        <p>Intelligence : @equipment.Intelligence</p>
+                        <p>ValuePaid : @ownedItem.ValuePaid Gold</p>
+
+                        <form asp-action="Sell" method="post">
+                            <input type="hidden" name="NinjaId" value="@ViewBag.NinjaId" />
+                            <input type="hidden" name="EquipmentId" value="@equipment.Id" />
+                            <button type="submit">Sell</button>
+                        </form>
+                    </div>
+                    ownedBool = true;
+                    break;
+                }
+            }
+            @if (!ownedBool)
+            {
+                <div class="item-card">
+                    <h3>@equipment.EquipmentType.Name : @equipment.Name</h3>
+                    <p>Strength : @equipment.Strength</p>
+                    <p>Agility : @equipment.Agility</p>
+                    <p>Intelligence : @equipment.Intelligence</p>
+                    <p>Value : @equipment.Value Gold</p>
+
+                    <form asp-action="Buy" method="post">
+                        <input type="hidden" name="NinjaId" value="@ViewBag.NinjaId" />
+                        <input type="hidden" name="EquipmentId" value="@equipment.Id" />
+                        <button type="submit">Buy</button>
+                    </form>
+                </div> 
+            }
+            ownedBool = false;
         }
     </div>
 
