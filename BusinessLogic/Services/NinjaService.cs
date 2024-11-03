@@ -36,6 +36,13 @@ public class NinjaService
         return ownedEquipment;
     }
 
+    public int getTotalValue(int id)
+    {
+        var totalValue = this.context.NinjaHasEquipment.Where(nhe => nhe.NinjaId == id).Sum(nhe => nhe.ValuePaid);
+        return totalValue;
+
+    }
+
     public void UpdateNinja(Ninja ninja)
     {
         this.context.Ninjas.Update(ninja);
