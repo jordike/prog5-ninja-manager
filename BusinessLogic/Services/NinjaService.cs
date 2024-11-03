@@ -1,4 +1,5 @@
-﻿using NinjaManager.Data.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using NinjaManager.Data.Models;
 
 namespace NinjaManager.BusinessLogic.Services;
 
@@ -30,7 +31,7 @@ public class NinjaService
     public List<Equipment> GetOwnedEquipment(Ninja ninja)
     {
         var ninjaEquipment = this.context.NinjaHasEquipment.Where(nhe => nhe.NinjaId == ninja.Id).ToList();
-        var equipment = this.context.Equipment.ToList();
+        var equipment = this.context.Equipment.Include(e => e.EquipmentType).ToList();
         var ownedEquipment = equipment.Where(e => ninjaEquipment.Any(nhe => nhe.EquipmentId == e.Id)).ToList();
 
         return ownedEquipment;
