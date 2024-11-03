@@ -1,144 +1,126 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NinjaManager.BusinessLogic.Services;
 using NinjaManager.Data.Models;
 
 namespace NinjaManager.Controllers;
 
 public class ShopController : Controller
 {
-    private readonly NinjaManagerContext context;
+    private readonly ShopService _shopService;
+    private readonly NinjaService _ninjaService;
+    private readonly EquipmentService _equipmentService;
 
     public ShopController(NinjaManagerContext context)
     {
-        this.context = context;
+        this._shopService = new ShopService(context);
+        this._ninjaService = new NinjaService(context);
+        this._equipmentService = new EquipmentService(context);
     }
 
     public IActionResult Index()
     {
-        var ninjaList = this.context.Ninjas.ToList();
+        var ninjaList = this._ninjaService.GetAllNinjas();
 
         return View(ninjaList);
     }
 
     public IActionResult Details(int id, int? equipmentTypeId = null)
     {
-        ViewBag.EquipmentTypes = this.context.EquipmentTypes.ToList();
+        ViewBag.EquipmentTypes = this._equipmentService.GetAllEquipmentTypes();
 
-        var ownedEquipment = this.context.NinjaHasEquipment
-        .Where(nhe => nhe.NinjaId == id)
-        .ToList();
+        var ninja = this._ninjaService.GetNinja(id);
 
-        ViewBag.ownedEquipmentId = ownedEquipment.Select(nhe => nhe.EquipmentId);
+        if (ninja == null)
+        {
+            TempData["Error"] = "Ninja not found.";
+
+            return RedirectToAction("Index");
+        }
+
+        var ownedEquipment = this._ninjaService.GetOwnedEquipment(ninja);
+
         ViewBag.NinjaId = id;
         ViewBag.OwnedEquipment = ownedEquipment;
         ViewBag.SelectedFilter = equipmentTypeId;
 
-        List<Equipment> equipment;
+        var equipment = equipmentTypeId != null
+            ? this._shopService.GetAllEquipmentOfTypeId((int)equipmentTypeId)
+            : this._shopService.GetAllEquipment();
 
-        if (equipmentTypeId != null)
-        {
-            equipment = this.context.Equipment
-                .Where(e => e.EquipmentTypeId == equipmentTypeId.Value)
-                .ToList();
-        }
-        else
-        {
-            equipment = this.context.Equipment.ToList();
-        }
         return View(equipment);
     }
 
     [HttpPost]
-    public IActionResult Buy(int NinjaId, int EquipmentId)
+    public IActionResult Buy(int ninjaId, int equipmentId)
     {
-        //check voor enough money
-        var equipmentValue = this.context.Equipment
-            .Where(e => e.Id == EquipmentId)
-            .Select(e => e.Value)
-            .FirstOrDefault();
+        // Check voor enough money
+        var equipment = this._shopService.GetEquipment(equipmentId);
 
-        bool enoughGold = this.context.Ninjas
-            .Any(n => n.Id == NinjaId && n.Gold >= equipmentValue);
-
-        if (enoughGold)
+        if (equipment == null)
         {
-            //check voor 1 per catogorie
-            var newEquipmentTypeId = this.context.Equipment
-                .Where(e => e.Id == EquipmentId)
-                .Select(e => e.EquipmentTypeId)
-                .FirstOrDefault();
+            TempData["Error"] = "Equipment not found.";
 
-            bool occupiedSlot = this.context.NinjaHasEquipment
-                .Any(nhe => nhe.NinjaId == NinjaId &&
-                    this.context.Equipment
-                        .Where(e => e.Id == nhe.EquipmentId)
-                        .Select(e => e.EquipmentTypeId)
-                        .FirstOrDefault() == newEquipmentTypeId);
-
-            if (!occupiedSlot)
-            {
-                //schrijven naar db
-                var ninja = this.context.Ninjas.Find(NinjaId);
-                if (ninja != null)
-                {
-                    ninja.Gold -= equipmentValue;
-                    this.context.NinjaHasEquipment.Add(new NinjaHasEquipment
-                    {
-                        NinjaId = NinjaId,
-                        EquipmentId = EquipmentId,
-                        ValuePaid = equipmentValue
-                    });
-                }
-
-                this.context.SaveChanges();
-
-                return RedirectToAction("Details", new { id = NinjaId });
-            }
-            else
-            {
-                //error message over geen empty slot
-                TempData["Error"] = "You already own a piece of equipment from this categorie.";
-                return RedirectToAction("Details", new { id = NinjaId });
-            }
+            return RedirectToAction("Details", new { id = ninjaId });
         }
-        else
+
+        var ninja = this._ninjaService.GetNinja(ninjaId);
+
+        if (ninja == null)
         {
-            //error message over niet genoeg geld
+            TempData["Error"] = "Ninja not found.";
+
+            return RedirectToAction("Details", new { id = ninjaId });
+        }
+
+        var enoughGold = this._shopService.NinjaHasEnoughGold(ninja, equipment.Value);
+
+        if (!enoughGold)
+        {
+            // Error message over niet genoeg geld
             TempData["Error"] = "Not enough gold to purchase this equipment.";
-            return RedirectToAction("Details", new { id = NinjaId });
+
+            return RedirectToAction("Details", new { id = ninjaId });
         }
+
+        // Check voor 1 per catogorie
+        var occupiedSlot = this._shopService.IsEquipmentTypeSlotOccupied(ninja, equipment.EquipmentTypeId);
+
+        if (occupiedSlot)
+        {
+            // Error message over geen empty slot
+            TempData["Error"] = "You already own a piece of equipment from this categorie.";
+
+            return RedirectToAction("Details", new { id = ninjaId });
+        }
+
+        this._shopService.BuyEquipment(ninja, equipment);
+
+        return RedirectToAction("Details", new { id = ninjaId });
     }
 
     [HttpPost]
-    public IActionResult Sell(int NinjaId, int EquipmentId)
+    public IActionResult Sell(int ninjaId, int equipmentId)
     {
-        var ninjaHasEquipment = this.context.NinjaHasEquipment
-        .FirstOrDefault(nhe => nhe.NinjaId == NinjaId && nhe.EquipmentId == EquipmentId);
+        var ninjaHasEquipment = this._equipmentService.GetNinjaHasEquipment(ninjaId, equipmentId);
 
-        if (ninjaHasEquipment != null)
-        {
-            var valuePaid = ninjaHasEquipment.ValuePaid;
-            var ninja = this.context.Ninjas.FirstOrDefault(n => n.Id == NinjaId);
-
-            if (ninja != null)
-            {
-                ninja.Gold += valuePaid;
-
-                this.context.NinjaHasEquipment.Remove(ninjaHasEquipment);
-
-                this.context.SaveChanges();
-            }
-            else
-            {
-                TempData["Error"] = "Ninja not found.";
-                return RedirectToAction("Details", new { id = NinjaId });
-            }
-        }
-        else
+        if (ninjaHasEquipment == null)
         {
             TempData["Error"] = "Equipment not found in inventory.";
-            return RedirectToAction("Details", new { id = NinjaId });
+
+            return RedirectToAction("Details", new { id = ninjaId });
         }
 
-        return RedirectToAction("Details", new { id = NinjaId });
+        var ninja = this._ninjaService.GetNinja(ninjaId);
+
+        if (ninja == null)
+        {
+            TempData["Error"] = "Ninja not found.";
+
+            return RedirectToAction("Details", new { id = ninjaId });
+        }
+
+        this._shopService.SellEquipment(ninja, ninjaHasEquipment);
+
+        return RedirectToAction("Details", new { id = ninjaId });
     } 
 }

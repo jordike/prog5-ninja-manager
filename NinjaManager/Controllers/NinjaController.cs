@@ -6,18 +6,16 @@ namespace NinjaManager.Controllers;
 
 public class NinjaController : Controller
 {
-    private readonly NinjaManagerContext context;
-    private readonly NinjaService ninjaService;
+    private readonly NinjaService _ninjaService;
 
     public NinjaController(NinjaManagerContext context)
     {
-        this.context = context;
-        this.ninjaService = new NinjaService(context);
+        this._ninjaService = new NinjaService(context);
     }
 
     public IActionResult Index()
     {
-        var ninjas = ninjaService.GetNinjas();
+        var ninjas = _ninjaService.GetAllNinjas();
 
         return View(ninjas);
     }
@@ -35,9 +33,9 @@ public class NinjaController : Controller
     {
         if (ModelState.IsValid)
         {
-            this.ninjaService.AddNewNinja(ninja);
+            this._ninjaService.AddNewNinja(ninja);
 
-            ViewBag.OwnedEquipment = this.ninjaService.GetOwnedEquipment(ninja);
+            ViewBag.OwnedEquipment = this._ninjaService.GetOwnedEquipment(ninja);
 
             return RedirectToAction("Edit", ninja.Id);
         }
@@ -47,15 +45,15 @@ public class NinjaController : Controller
 
     public IActionResult Edit(int id)
     {
-        var ninja = this.ninjaService.GetNinja(id);
+        var ninja = this._ninjaService.GetNinja(id);
 
         if (ninja == null)
         {
             return RedirectToAction("Index");
         }
 
-        ViewBag.OwnedEquipment = this.ninjaService.GetOwnedEquipment(ninja);
-        ViewBag.TotalValue = this.ninjaService.getTotalValue(id);
+        ViewBag.OwnedEquipment = this._ninjaService.GetOwnedEquipment(ninja);
+        ViewBag.TotalValue = this._ninjaService.getTotalValue(id);
 
         return View(ninja);
     }
@@ -63,14 +61,14 @@ public class NinjaController : Controller
     [HttpPost]
     public IActionResult Edit(Ninja ninja)
     {
-        ViewBag.OwnedEquipment = this.ninjaService.GetOwnedEquipment(ninja);
+        ViewBag.OwnedEquipment = this._ninjaService.GetOwnedEquipment(ninja);
 
         if (!ModelState.IsValid)
         {
             return View(ninja);
         }
 
-        var ninjaToUpdate = this.ninjaService.GetNinja(ninja.Id);
+        var ninjaToUpdate = this._ninjaService.GetNinja(ninja.Id);
 
         if (ninjaToUpdate == null)
         {
@@ -80,7 +78,7 @@ public class NinjaController : Controller
         ninjaToUpdate.Name = ninja.Name;
         ninjaToUpdate.Gold = ninja.Gold;
 
-        this.ninjaService.UpdateNinja(ninjaToUpdate);
+        this._ninjaService.UpdateNinja(ninjaToUpdate);
 
         TempData["SuccessMessage"] = "De ninja is bewerkt.";
 
@@ -89,7 +87,7 @@ public class NinjaController : Controller
 
     public IActionResult Delete(int id)
     {
-        var ninja = this.ninjaService.GetNinja(id);
+        var ninja = this._ninjaService.GetNinja(id);
 
         if (ninja == null)
         {
@@ -102,14 +100,14 @@ public class NinjaController : Controller
     [HttpPost]
     public IActionResult Delete(Ninja ninja)
     {
-        var ninjaToDelete = this.ninjaService.GetNinja(ninja.Id);
+        var ninjaToDelete = this._ninjaService.GetNinja(ninja.Id);
 
         if (ninjaToDelete == null)
         {
             return RedirectToAction("Index");
         }
 
-        this.ninjaService.DeleteNinja(ninjaToDelete);
+        this._ninjaService.DeleteNinja(ninjaToDelete);
 
         TempData["SuccessMessage"] = "De ninja is verwijderd.";
 
@@ -118,7 +116,7 @@ public class NinjaController : Controller
 
     public IActionResult CleanNinja(int id)
     {
-        var ninja = this.ninjaService.GetNinja(id);
+        var ninja = this._ninjaService.GetNinja(id);
 
         if (ninja == null)
         {
@@ -131,7 +129,7 @@ public class NinjaController : Controller
     [HttpPost]
     public IActionResult CleanNinja(Ninja ninja)
     {
-        if (this.ninjaService.CleanNinjaInventory(ninja))
+        if (this._ninjaService.CleanNinjaInventory(ninja))
         {
             TempData["SuccessMessage"] = "De inventory van de ninja is schoongemaakt.";
         }
