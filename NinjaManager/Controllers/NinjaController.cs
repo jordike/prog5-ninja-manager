@@ -105,8 +105,32 @@ public class NinjaController : Controller
         return RedirectToAction("Index");
     }
 
-    public IActionResult Details(int id)
+    public IActionResult CleanNinja(int id)
     {
-        return View();
+        var ninja = this.context.Ninjas.Find(id);
+
+        if (ninja == null)
+        {
+            return RedirectToAction("Index");
+        }
+
+        return View(ninja);
+    }
+
+    [HttpPost]
+    public IActionResult CleanNinja(Ninja ninja)
+    {
+        var ninjaEquipment = this.context.NinjaHasEquipment.Where(nhe => nhe.NinjaId == ninja.Id).ToList();
+
+        foreach (var nhe in ninjaEquipment)
+        {
+            ninja.Gold += nhe.ValuePaid;
+
+            this.context.NinjaHasEquipment.Remove(nhe);
+        }
+
+        this.context.SaveChanges();
+
+        return RedirectToAction("Index");
     }
 }
