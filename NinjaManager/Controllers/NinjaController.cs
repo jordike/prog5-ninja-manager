@@ -121,10 +121,16 @@ public class NinjaController : Controller
     public IActionResult CleanNinja(Ninja ninja)
     {
         var ninjaEquipment = this.context.NinjaHasEquipment.Where(nhe => nhe.NinjaId == ninja.Id).ToList();
+        var ninjaToUpdate = this.context.Ninjas.Find(ninja.Id);
+
+        if (ninjaToUpdate == null || ninjaEquipment.Count == 0)
+        {
+            return RedirectToAction("Index");
+        }
 
         foreach (var nhe in ninjaEquipment)
         {
-            ninja.Gold += nhe.ValuePaid;
+            ninjaToUpdate.Gold += nhe.ValuePaid;
 
             this.context.NinjaHasEquipment.Remove(nhe);
         }
