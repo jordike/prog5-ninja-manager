@@ -1,0 +1,39 @@
+﻿@model (Equipment?, int)
+@{
+    var equipment = Model.Item1;
+    var ninjaId = Model.Item2;
+}
+
+@if (equipment != null)
+{
+    <div class="card equipment-slot">
+        <div class="card-body equipment-body">
+            <p>
+                <strong>Head:</strong>
+                @equipment.Name
+            </p>
+            <p>
+                <strong>Strength:</strong>
+                @equipment.Strength
+            </p>
+            <p>
+                <strong>Agility:</strong>
+                @equipment.Agility
+            </p>
+            <p>
+                <strong>Intelligence:</strong>
+                @equipment.Intelligence
+            </p>
+        </div>
+    </div>
+}
+else
+{
+    <a class="text-decoration-none" asp-controller="Shop" asp-action="Details" asp-route-id="@ninjaId">
+        <div class="card equipment-slot empty-equipment-slot">
+            <div class="card-body equipment-body">
+                <i class="empty-slot-label fa fa-solid fa-plus"></i>
+            </div>
+        </div>
+    </a>
+}

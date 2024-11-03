@@ -21,6 +21,7 @@ public class NinjaController : Controller
 
     public IActionResult Create()
     {
+        // Temporary ninja to prevent null reference exception.
         var ninja = new Ninja();
 
         return View(ninja);
@@ -29,16 +30,23 @@ public class NinjaController : Controller
     [HttpPost]
     public IActionResult Create(Ninja ninja)
     {
-        this.context.Add(
-            new Ninja
-            {
-                Name = ninja.Name,
-                Gold = ninja.Gold
-            }
-        );
-        this.context.SaveChanges();
+        if (ModelState.IsValid)
+        {
+            this.context.Add(
+                new Ninja
+                {
+                    Name = ninja.Name,
+                    Gold = ninja.Gold
+                }
+            );
+            this.context.SaveChanges();
 
-        return RedirectToAction("Index");
+            this.RepopulateOwnedEquipment(ninja.Id);
+
+            return RedirectToAction("Edit", ninja.Id);
+        }
+
+        return View(ninja);
     }
 
     public IActionResult Edit(int id)
@@ -50,12 +58,25 @@ public class NinjaController : Controller
             return RedirectToAction("Index");
         }
 
+        var ninjaEquipment = this.context.NinjaHasEquipment.Where(nhe => nhe.NinjaId == id).ToList();
+        var equipment = this.context.Equipment.ToList();
+        var ownedEquipment = equipment.Where(e => ninjaEquipment.Any(nhe => nhe.EquipmentId == e.Id)).ToList();
+
+        ViewBag.OwnedEquipment = ownedEquipment;
+
         return View(ninja);
     }
 
     [HttpPost]
     public IActionResult Edit(Ninja ninja)
     {
+        this.RepopulateOwnedEquipment(ninja.Id);
+
+        if (!ModelState.IsValid)
+        {
+            return View(ninja);
+        }
+
         var ninjaToUpdate = this.context.Ninjas.Find(ninja.Id);
 
         if (ninjaToUpdate == null)
@@ -68,7 +89,9 @@ public class NinjaController : Controller
 
         this.context.SaveChanges();
 
-        return RedirectToAction("Index");
+        TempData["SuccessMessage"] = "De ninja is bewerkt.";
+
+        return RedirectToAction("Edit", ninja);
     }
 
     public IActionResult Delete(int id)
@@ -93,14 +116,62 @@ public class NinjaController : Controller
             return RedirectToAction("Index");
         }
 
+        this.context.NinjaHasEquipment
+            .Where(nhe => nhe.NinjaId == ninja.Id).ToList()
+            .ForEach(nhe => this.context.NinjaHasEquipment.Remove(nhe));
+
         this.context.Ninjas.Remove(ninjaToDelete);
+
         this.context.SaveChanges();
+
+        TempData["SuccessMessage"] = "De ninja is verwijderd.";
 
         return RedirectToAction("Index");
     }
 
-    public IActionResult Details(int id)
+    public IActionResult CleanNinja(int id)
     {
-        return View();
+        var ninja = this.context.Ninjas.Find(id);
+
+        if (ninja == null)
+        {
+            return RedirectToAction("Index");
+        }
+
+        return View(ninja);
+    }
+
+    [HttpPost]
+    public IActionResult CleanNinja(Ninja ninja)
+    {
+        var ninjaEquipment = this.context.NinjaHasEquipment.Where(nhe => nhe.NinjaId == ninja.Id).ToList();
+        var ninjaToUpdate = this.context.Ninjas.Find(ninja.Id);
+
+        if (ninjaToUpdate != null)
+        {
+            foreach (var nhe in ninjaEquipment)
+            {
+                ninjaToUpdate.Gold += nhe.ValuePaid;
+
+                this.context.NinjaHasEquipment.Remove(nhe);
+            }
+
+            this.context.SaveChanges();
+
+            TempData["SuccessMessage"] = "De inventory van de ninja is schoongemaakt.";
+        }
+
+        this.RepopulateOwnedEquipment(ninja.Id);
+
+        return RedirectToAction("Edit", ninja.Id);
+    }
+
+    private void RepopulateOwnedEquipment(int ninjaId)
+    {
+        var ninjaEquipment = this.context.NinjaHasEquipment.Where(nhe => nhe.NinjaId == ninjaId).ToList();
+        var equipment = this.context.Equipment.ToList();
+        var ownedEquipment = equipment.Where(e => ninjaEquipment.Any(nhe => nhe.EquipmentId == e.Id)).ToList();
+
+        ViewBag.OwnedEquipment = ownedEquipment;
     }
 }
