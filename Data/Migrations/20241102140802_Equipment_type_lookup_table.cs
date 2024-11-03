@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace NinjaManager.Migrations
+namespace NinjaManager.Data.Migrations
 {
     /// <inheritdoc />
     public partial class Equipment_type_lookup_table : Migration

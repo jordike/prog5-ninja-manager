@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using NinjaManager.Models;
+using NinjaManager.Data.Models;
 
 namespace NinjaManager;
 
@@ -13,7 +13,8 @@ public class Program
         builder.Services.AddControllersWithViews();
 
         builder.Services.AddDbContext<NinjaManagerContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("NinjaManager")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("NinjaManager"),
+                b => b.MigrationsAssembly("NinjaManager.Data")));
 
         var app = builder.Build();
 

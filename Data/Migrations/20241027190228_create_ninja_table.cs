@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace NinjaManager.Migrations
+namespace NinjaManager.Data.Migrations
 {
     /// <inheritdoc />
     public partial class create_ninja_table : Migration

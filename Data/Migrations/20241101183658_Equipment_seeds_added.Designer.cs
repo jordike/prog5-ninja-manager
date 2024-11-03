@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NinjaManager.Models;
+using NinjaManager.Data.Models;
 
 #nullable disable
 
-namespace NinjaManager.Migrations
+namespace NinjaManager.Data.Migrations
 {
     [DbContext(typeof(NinjaManagerContext))]
-    [Migration("20241102184529_Equipmenttypes_to_context")]
-    partial class Equipmenttypes_to_context
+    [Migration("20241101183658_Equipment_seeds_added")]
+    partial class Equipment_seeds_added
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,9 +35,6 @@ namespace NinjaManager.Migrations
                     b.Property<int>("Agility")
                         .HasColumnType("int");
 
-                    b.Property<int>("EquipmentTypeId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Intelligence")
                         .HasColumnType("int");
 
@@ -48,12 +45,14 @@ namespace NinjaManager.Migrations
                     b.Property<int>("Strength")
                         .HasColumnType("int");
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Value")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EquipmentTypeId");
 
                     b.ToTable("Equipment");
 
@@ -62,230 +61,181 @@ namespace NinjaManager.Migrations
                         {
                             Id = 1,
                             Agility = 6,
-                            EquipmentTypeId = 1,
                             Intelligence = 5,
                             Name = "Ninja Hood of Shadows",
                             Strength = 2,
+                            Type = "Head",
                             Value = 80
                         },
                         new
                         {
                             Id = 2,
                             Agility = 4,
-                            EquipmentTypeId = 1,
                             Intelligence = 1,
                             Name = "Samurai Helm",
                             Strength = 5,
+                            Type = "Head",
                             Value = 100
                         },
                         new
                         {
                             Id = 3,
                             Agility = 10,
-                            EquipmentTypeId = 1,
                             Intelligence = 4,
                             Name = "Cursed Mask of Stealth",
                             Strength = 3,
+                            Type = "Head",
                             Value = 90
                         },
                         new
                         {
                             Id = 4,
                             Agility = 3,
-                            EquipmentTypeId = 2,
                             Intelligence = 2,
                             Name = "Dragon Scale Armor",
                             Strength = 10,
+                            Type = "Chest",
                             Value = 200
                         },
                         new
                         {
                             Id = 5,
                             Agility = 12,
-                            EquipmentTypeId = 2,
                             Intelligence = 2,
                             Name = "Leather Tunic of Agility",
                             Strength = 4,
+                            Type = "Chest",
                             Value = 120
                         },
                         new
                         {
                             Id = 6,
                             Agility = 5,
-                            EquipmentTypeId = 2,
                             Intelligence = 10,
                             Name = "Mystic Robe of Wisdom",
                             Strength = 1,
+                            Type = "Chest",
                             Value = 150
                         },
                         new
                         {
                             Id = 7,
                             Agility = 4,
-                            EquipmentTypeId = 3,
                             Intelligence = 1,
                             Name = "Bracers of Strength",
                             Strength = 8,
+                            Type = "Hand",
                             Value = 110
                         },
                         new
                         {
                             Id = 8,
                             Agility = 9,
-                            EquipmentTypeId = 3,
                             Intelligence = 4,
                             Name = "Gloves of Precision",
                             Strength = 2,
+                            Type = "Hand",
                             Value = 95
                         },
                         new
                         {
                             Id = 9,
                             Agility = 11,
-                            EquipmentTypeId = 3,
                             Intelligence = 2,
                             Name = "Assassin's Gloves",
                             Strength = 3,
+                            Type = "Hand",
                             Value = 100
                         },
                         new
                         {
                             Id = 10,
                             Agility = 15,
-                            EquipmentTypeId = 4,
                             Intelligence = 2,
                             Name = "Boots of Silent Steps",
                             Strength = 1,
+                            Type = "Feet",
                             Value = 130
                         },
                         new
                         {
                             Id = 11,
                             Agility = 7,
-                            EquipmentTypeId = 4,
                             Intelligence = 2,
                             Name = "Warrior's Sandals",
                             Strength = 5,
+                            Type = "Feet",
                             Value = 90
                         },
                         new
                         {
                             Id = 12,
                             Agility = 8,
-                            EquipmentTypeId = 4,
                             Intelligence = 3,
                             Name = "Frostwalker Boots",
                             Strength = 4,
+                            Type = "Feet",
                             Value = 140
                         },
                         new
                         {
                             Id = 13,
                             Agility = 1,
-                            EquipmentTypeId = 5,
                             Intelligence = 0,
                             Name = "Ring of Strength",
                             Strength = 5,
+                            Type = "Ring",
                             Value = 70
                         },
                         new
                         {
                             Id = 14,
                             Agility = 1,
-                            EquipmentTypeId = 5,
                             Intelligence = 5,
                             Name = "Ring of Intelligence",
                             Strength = 0,
+                            Type = "Ring",
                             Value = 80
                         },
                         new
                         {
                             Id = 15,
                             Agility = 5,
-                            EquipmentTypeId = 5,
                             Intelligence = 0,
                             Name = "Ring of Agility",
                             Strength = 1,
+                            Type = "Ring",
                             Value = 75
                         },
                         new
                         {
                             Id = 16,
                             Agility = 2,
-                            EquipmentTypeId = 6,
                             Intelligence = 8,
                             Name = "Amulet of the Night",
                             Strength = 2,
+                            Type = "Necklace",
                             Value = 110
                         },
                         new
                         {
                             Id = 17,
                             Agility = 3,
-                            EquipmentTypeId = 6,
                             Intelligence = 5,
                             Name = "Necklace of the Elements",
                             Strength = 3,
+                            Type = "Necklace",
                             Value = 120
                         },
                         new
                         {
                             Id = 18,
                             Agility = 6,
-                            EquipmentTypeId = 6,
                             Intelligence = 3,
                             Name = "Talisman of Protection",
                             Strength = 1,
+                            Type = "Necklace",
                             Value = 100
-                        });
-                });
-
-            modelBuilder.Entity("NinjaManager.Models.EquipmentType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EquipmentTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Head"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Chest"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Hand"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Feet"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Ring"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Necklace"
                         });
                 });
 
@@ -317,28 +267,9 @@ namespace NinjaManager.Migrations
                     b.Property<int>("EquipmentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ValuePaid")
-                        .HasColumnType("int");
-
                     b.HasKey("NinjaId", "EquipmentId");
 
                     b.ToTable("NinjaHasEquipment");
-                });
-
-            modelBuilder.Entity("NinjaManager.Models.Equipment", b =>
-                {
-                    b.HasOne("NinjaManager.Models.EquipmentType", "EquipmentType")
-                        .WithMany("Equipment")
-                        .HasForeignKey("EquipmentTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("EquipmentType");
-                });
-
-            modelBuilder.Entity("NinjaManager.Models.EquipmentType", b =>
-                {
-                    b.Navigation("Equipment");
                 });
 #pragma warning restore 612, 618
         }

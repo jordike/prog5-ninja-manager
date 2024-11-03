@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NinjaManager.Models;
+using NinjaManager.Data.Models;
 
 namespace NinjaManager.Controllers;
 
 public class InventoryController : Controller
 {
-
     private readonly NinjaManagerContext context;
 
     public InventoryController(NinjaManagerContext context)

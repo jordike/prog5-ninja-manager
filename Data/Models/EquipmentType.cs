@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NinjaManager.Models;
+namespace NinjaManager.Data.Models;
 
-public class Ninja
+public class EquipmentType
 {
     [Key]
     public int Id { get; set; }
@@ -11,7 +11,5 @@ public class Ninja
     [MinLength(1)]
     public string Name { get; set; }
 
-    [Required]
-    [Range(0, int.MaxValue)]
-    public int Gold { get; set; }
+    public ICollection<Equipment> Equipment { get; set; }
 }

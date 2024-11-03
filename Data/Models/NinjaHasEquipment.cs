@@ -1,0 +1,17 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace NinjaManager.Data.Models;
+
+public class NinjaHasEquipment
+{
+    [ForeignKey("Ninja")]
+    public int NinjaId { get; set; }
+
+    [ForeignKey("Equipment")]
+    public int EquipmentId { get; set; }
+
+    [Required]
+    [Range(0, int.MaxValue)]
+    public int ValuePaid { get; set; }
+}

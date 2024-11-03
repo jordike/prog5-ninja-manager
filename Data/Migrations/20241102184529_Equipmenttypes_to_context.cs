@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace NinjaManager.Migrations
+namespace NinjaManager.Data.Migrations
 {
     /// <inheritdoc />
     public partial class Equipmenttypes_to_context : Migration

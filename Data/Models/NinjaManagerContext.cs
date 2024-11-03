@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace NinjaManager.Models;
+namespace NinjaManager.Data.Models;
 
 public partial class NinjaManagerContext : DbContext
 {

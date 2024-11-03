@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NinjaManager.Models;
+using NinjaManager.Data.Models;
 
 namespace NinjaManager.Controllers;
 
