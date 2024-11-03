@@ -4,12 +4,19 @@ using NinjaManager.Data.Models;
 
 namespace NinjaManager.Controllers;
 
+/// <summary>
+/// Controller for handling shop-related actions.
+/// </summary>
 public class ShopController : Controller
 {
     private readonly ShopService _shopService;
     private readonly NinjaService _ninjaService;
     private readonly EquipmentService _equipmentService;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ShopController"/> class.
+    /// </summary>
+    /// <param name="context">The database context.</param>
     public ShopController(NinjaManagerContext context)
     {
         this._shopService = new ShopService(context);
@@ -17,6 +24,10 @@ public class ShopController : Controller
         this._equipmentService = new EquipmentService(context);
     }
 
+    /// <summary>
+    /// Displays the list of all ninjas.
+    /// </summary>
+    /// <returns>A view with the list of ninjas.</returns>
     public IActionResult Index()
     {
         var ninjaList = this._ninjaService.GetAllNinjas();
@@ -24,6 +35,12 @@ public class ShopController : Controller
         return View(ninjaList);
     }
 
+    /// <summary>
+    /// Displays the details of a specific ninja, including their equipment.
+    /// </summary>
+    /// <param name="id">The ID of the ninja.</param>
+    /// <param name="equipmentTypeId">The optional ID of the equipment type to filter by.</param>
+    /// <returns>A view with the ninja details and equipment.</returns>
     public IActionResult Details(int id, int? equipmentTypeId = null)
     {
         ViewBag.EquipmentTypes = this._equipmentService.GetAllEquipmentTypes();
@@ -33,7 +50,6 @@ public class ShopController : Controller
         if (ninja == null)
         {
             TempData["Error"] = "Ninja not found.";
-
             return RedirectToAction("Index");
         }
 
@@ -50,10 +66,15 @@ public class ShopController : Controller
         return View(equipment);
     }
 
+    /// <summary>
+    /// Handles the purchase of equipment for a ninja.
+    /// </summary>
+    /// <param name="ninjaId">The ID of the ninja.</param>
+    /// <param name="equipmentId">The ID of the equipment to purchase.</param>
+    /// <returns>A redirect to the ninja details view.</returns>
     [HttpPost]
     public IActionResult Buy(int ninjaId, int equipmentId)
     {
-        // Check voor enough money
         var equipment = this._shopService.GetEquipment(equipmentId);
 
         if (equipment == null)
@@ -76,18 +97,15 @@ public class ShopController : Controller
 
         if (!enoughGold)
         {
-            // Error message over niet genoeg geld
             TempData["Error"] = "Not enough gold to purchase this equipment.";
 
             return RedirectToAction("Details", new { id = ninjaId });
         }
 
-        // Check voor 1 per catogorie
         var occupiedSlot = this._shopService.IsEquipmentTypeSlotOccupied(ninja, equipment.EquipmentTypeId);
 
         if (occupiedSlot)
         {
-            // Error message over geen empty slot
             TempData["Error"] = "You already own a piece of equipment from this category.";
 
             return RedirectToAction("Details", new { id = ninjaId });
@@ -98,6 +116,12 @@ public class ShopController : Controller
         return RedirectToAction("Details", new { id = ninjaId });
     }
 
+    /// <summary>
+    /// Handles the sale of equipment from a ninja.
+    /// </summary>
+    /// <param name="ninjaId">The ID of the ninja.</param>
+    /// <param name="equipmentId">The ID of the equipment to sell.</param>
+    /// <returns>A redirect to the ninja details view.</returns>
     [HttpPost]
     public IActionResult Sell(int ninjaId, int equipmentId)
     {
@@ -122,5 +146,5 @@ public class ShopController : Controller
         this._shopService.SellEquipment(ninja, ninjaHasEquipment);
 
         return RedirectToAction("Details", new { id = ninjaId });
-    } 
+    }
 }
