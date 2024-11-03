@@ -1,0 +1,50 @@
+﻿@model Equipment
+
+<h1>Equipment bewerken</h1>
+
+<form asp-action="Edit" method="POST">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label class="form-label" asp-for="@Model.Name">Ninja:</label>
+        <input class="form-control" type="text" asp-for="@Model.Name" />
+        <span class="text-danger" asp-validation-for="@Model.Name"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <span class="text-danger mb-2" asp-validation-for="EquipmentTypeId"></span>
+        <label class="mb-2" asp-for="EquipmentTypeId"></label>
+        <select class="form-control" asp-for="EquipmentTypeId" asp-items="@(new SelectList(ViewBag.EquipmentTypes, "Id", "Name"))">
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label" asp-for="@Model.Strength"></label>
+        <input class="form-control" type="number" asp-for="@Model.Strength" />
+        <span class="text-danger" asp-validation-for="@Model.Strength"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label" asp-for="@Model.Agility"></label>
+        <input class="form-control" type="number" asp-for="@Model.Agility" />
+        <span class="text-danger" asp-validation-for="@Model.Agility"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label" asp-for="@Model.Intelligence"></label>
+        <input class="form-control" type="number" asp-for="@Model.Intelligence" />
+        <span class="text-danger" asp-validation-for="@Model.Intelligence"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label" asp-for="@Model.Value"></label>
+        <input class="form-control" type="number" asp-for="@Model.Value" />
+        <span class="text-danger" asp-validation-for="@Model.Value"></span>
+    </div>
+
+    <hr />
+
+    <button class="btn btn-primary">Opslaan</button>
+    <a class="btn btn-secondary" asp-action="Index">Annuleren</a>
+    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id">Verwijderen</a>
+</form>
