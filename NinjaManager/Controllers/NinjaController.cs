@@ -17,7 +17,7 @@ public class NinjaController : Controller
 
     public IActionResult Index()
     {
-        var ninjas = ninjaService.GetNinjas();
+        var ninjas = ninjaService.GetAllNinjas();
 
         return View(ninjas);
     }

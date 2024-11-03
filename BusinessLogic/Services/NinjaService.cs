@@ -11,7 +11,7 @@ public class NinjaService
         this.context = context;
     }
 
-    public List<Ninja> GetNinjas()
+    public List<Ninja> GetAllNinjas()
     {
         return context.Ninjas.ToList();
     }

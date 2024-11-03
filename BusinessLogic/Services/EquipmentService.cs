@@ -73,4 +73,10 @@ public class EquipmentService
             .Where(nhe => nhe.EquipmentId == equipment.Id)
             .ToList();
     }
+
+    public NinjaHasEquipment? GetNinjaHasEquipment(int ninjaId, int equipmentId)
+    {
+        return this.context.NinjaHasEquipment
+            .FirstOrDefault(nhe => nhe.NinjaId == ninjaId && nhe.EquipmentId == equipmentId);
+    }
 }

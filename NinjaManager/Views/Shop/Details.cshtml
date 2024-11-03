@@ -2,8 +2,6 @@
 @{
     var errorMessage = TempData["Error"] as string;
     var ownedEquipment = ViewBag.OwnedEquipment as List<NinjaHasEquipment>;
-    var ownedEquipmentIds = ViewBag.OwnedEquipmentId;
-    var selectedEquipmentTypeId = ViewBag.EquipmentTypes as List<EquipmentType>;
     var selectedFilter = ViewBag.SelectedFilter as int?;
     var ownedBool = false;
     var selectedBool = false;
