@@ -12,6 +12,7 @@ namespace NinjaManager.Models
         public int EquipmentId { get; set; }
 
         [Required]
+        [Range(0, int.MaxValue)]
         public int ValuePaid { get; set; }
     }
 }
