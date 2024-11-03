@@ -40,7 +40,7 @@ public class NinjaController : Controller
             );
             this.context.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Edit", ninja.Id);
         }
 
         return View(ninja);
@@ -83,6 +83,13 @@ public class NinjaController : Controller
 
             return RedirectToAction("Edit", ninja);
         }
+
+        // Re-populate ViewBag.OwnedEquipment
+        var ninjaEquipment = this.context.NinjaHasEquipment.Where(nhe => nhe.NinjaId == ninja.Id).ToList();
+        var equipment = this.context.Equipment.ToList();
+        var ownedEquipment = equipment.Where(e => ninjaEquipment.Any(nhe => nhe.EquipmentId == e.Id)).ToList();
+
+        ViewBag.OwnedEquipment = ownedEquipment;
 
         return View(ninja);
     }

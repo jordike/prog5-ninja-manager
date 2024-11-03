@@ -14,6 +14,4 @@ public class Ninja
     [Required]
     [Range(0, int.MaxValue)]
     public int Gold { get; set; }
-
-    public List<NinjaHasEquipment> NinjaHasEquipment { get; set; }
 }
